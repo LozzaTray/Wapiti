@@ -16,10 +16,14 @@ def run():
     channel_file = os.path.join(curr_dir, "data/gr3channel.csv")
     channel = read_csv_as_array(channel_file)
 
+    output_demod_file = os.path.join(curr_dir, "output/wa1.txt")
     demodulated_sequence = demodulate(data_seq, channel)
-    decoded_sequence = decode_symbol_sequence(demodulated_sequence)
+    write_to_file(output_demod_file, demodulated_sequence)
+    #demodulated_sequence = read_csv_as_array(output_demod_file)
+
 
     output_file = os.path.join(curr_dir, "output/wa2.txt")
+    decoded_sequence = decode_symbol_sequence(demodulated_sequence)
     write_to_file(output_file, decoded_sequence)
 
 
