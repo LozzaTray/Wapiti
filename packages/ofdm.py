@@ -1,5 +1,5 @@
 """Module for performing ofdm tasks"""
-from fourier import DFT, iDFT
+from .fourier import dft, idft
 import numpy as np
 
 
@@ -21,8 +21,8 @@ def decode(received_sequence, channel_impulse_response):
     K = len(channel_impulse_response)
     N = len(received_sequence) - K
 
-    H_arr = DFT(channel_impulse_response, N)
-    Y_arr = DFT(received_sequence, N)
+    H_arr = dft(channel_impulse_response, N)
+    Y_arr = dft(received_sequence, N)
 
     Y_arr = Y_arr[K+1:]
     X_arr = np.divide(Y_arr, H_arr)

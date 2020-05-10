@@ -1,6 +1,6 @@
 """Code for decoding data"""
-from parser import read_csv_as_array
-from ofdm import decode
+from packages.parser import read_csv_as_array
+from packages.ofdm import decode
 import os
 
 curr_dir = os.path.dirname(__file__)
