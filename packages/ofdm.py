@@ -15,16 +15,23 @@ def encode(data_sequence, K):
     raise NotImplementedError
 
 
-def decode(received_sequence, channel_impulse_response):
+def decode(received_sequence, channel_impulse_response, N=1024, K=32):
     """decodes by taking the DFT of the received_sequence and channel_impulse_response
     then apply point-wise division to get the true symbol value"""
-    K = len(channel_impulse_response)
-    N = len(received_sequence) - K
-
     H_arr = dft(channel_impulse_response, N)
-    Y_arr = dft(received_sequence, N)
+    sequence_length = len(received_sequence)
+    num_blocks = int(sequence_length / (N + K))
 
-    Y_arr = Y_arr[K+1:]
-    X_arr = np.divide(Y_arr, H_arr)
+    decoded_sequence = []
 
-    return X_arr
+    for i in range(0, num_blocks):
+        lower_index = i*(N+K) + K
+        upper_index = lower_index + N
+        block = received_sequence[lower_index : upper_index]
+
+        dfted_block = dft(block, N)
+        decoded_block = np.divide(dfted_block, H_arr)
+
+        decoded_sequence = np.concatenate(decoded_sequence, decoded_block)
+
+    return decoded_sequence
