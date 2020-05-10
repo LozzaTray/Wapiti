@@ -13,7 +13,7 @@ def encode(data_sequence, K):
     raise NotImplementedError
 
 
-def decode(received_sequence, channel_impulse_response, N, K):
+def decode(received_sequence, channel_impulse_response):
     """decodes by taking the DFT of the received_sequence and channel_impulse_response
     then apply point-wise division to get the true symbol value"""
     raise NotImplementedError
