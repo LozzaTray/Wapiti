@@ -14,5 +14,28 @@ def map_symbol_to_bits(complex_symbol):
     return symbol
 
 
+def decode_until_zero_found(symbol_sequence, start_index=0):
+    """loops through sequence until a two is found"""
+    bit_sequence = []
+    sequence_length = len(symbol_sequence)
+    zero_index = 0
+
+    for i in range(start_index, sequence_length):
+        symbol = symbol_sequence[i]
+        decoded_bits = map_symbol_to_bits(symbol)
+        if(decoded_bits != 2):
+            np.concatenate(bit_sequence, decoded_bits)
+        else:
+            zero_index = i
+            break
+
+    return bit_sequence, zero_index
+
+
 def decode_symbol_sequence(symbol_sequence):
     """takes whole sequence and maps to bits"""
+    title, zero_index = decode_until_zero_found(symbol_sequence)
+    file_length, next_zero_index = decode_until_zero_found(symbol_sequence, zero_index + 1)
+    data_sequence, None = decode_until_zero_found(symbol_sequence, next_zero_index + 1)
+
+    return title, file_length, data_sequence
