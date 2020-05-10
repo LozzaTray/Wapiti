@@ -24,7 +24,7 @@ def decode_until_zero_found(symbol_sequence, start_index=0):
         symbol = symbol_sequence[i]
         decoded_bits = map_symbol_to_bits(symbol)
         if(decoded_bits != 2):
-            np.concatenate(bit_sequence, decoded_bits)
+            bit_sequence.append(decoded_bits)
         else:
             zero_index = i
             break
@@ -36,6 +36,6 @@ def decode_symbol_sequence(symbol_sequence):
     """takes whole sequence and maps to bits"""
     title, zero_index = decode_until_zero_found(symbol_sequence)
     file_length, next_zero_index = decode_until_zero_found(symbol_sequence, zero_index + 1)
-    data_sequence, None = decode_until_zero_found(symbol_sequence, next_zero_index + 1)
+    data_sequence, discard = decode_until_zero_found(symbol_sequence, next_zero_index + 1)
 
     return title, file_length, data_sequence
