@@ -1,5 +1,6 @@
 """Module for decoding"""
 import numpy
+import math
 
 
 def map_symbol_to_bits(complex_symbol):
@@ -18,8 +19,20 @@ def map_symbol_to_bits(complex_symbol):
     return symbol
 
 
+def map_bit_array_to_byte(bit_array):
+    byte = ""
+    for bit in bit_array:
+        byte = byte + str(bit)
+    return int(byte, base=2)
+
+
 def decode_symbol_sequence(symbol_sequence):
     """loops through sequence until a two is found"""
     bit_sequence = numpy.array(list(map(map_symbol_to_bits, symbol_sequence)))
     bit_sequence = bit_sequence.flatten()
-    return bit_sequence
+    
+    num_bits = len(bit_sequence)
+    num_bytes = math.floor(num_bits / 8)
+    byte_sequence = numpy.reshape(bit_sequence[0: num_bytes * 8], (num_bytes, 8))
+    byte_sequence = numpy.array(list(map(map_bit_array_to_byte, byte_sequence)))
+    return byte_sequence.astype("uint8")
