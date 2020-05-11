@@ -7,7 +7,7 @@ def record(length, filename, rate = 44100, chunk = 1024, channels = 2, FORMAT = 
     Parameters: length (int, seconds), filename (string)"""
 
     audio = pyaudio.PyAudio() #create pyaudio object
- 
+
     #start recording
     stream = audio.open(format=FORMAT, channels=channels, rate=rate, input=True, frames_per_buffer=chunk)
     print ("Recording...")
