@@ -12,8 +12,10 @@ def run():
     file_name_full = os.path.join(curr_dir, "data/" + file_name_short + ".wav")
 
     duration = int(input("Duration of recording (seconds): "))
+
+    chan = int(input("Number of channels to use (1 or 2): "))
     
-    record(5, file_name_full)
+    record(duration, file_name_full, channels = chan)
     
     playback (file_name_full)
 
