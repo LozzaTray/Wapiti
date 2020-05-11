@@ -35,5 +35,5 @@ def run():
 
 
 if __name__ == "__main__":
-    print("\nTeam Wapiti - WA1\n~~~~~~~~~~~~~~\n")
+    print("\nTeam Wapiti - WA1\n~~~~~~~~~~~~~~~~~~~\n")
     run()

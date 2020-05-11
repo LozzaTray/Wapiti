@@ -8,21 +8,24 @@ def decode_symbol(complex_symbol):
     Checks argument and or magnitude and returns
     """
 
-    arg = numpy.angle(complex_symbol, deg=True)
+    real = numpy.real(complex_symbol)
+    imag = numpy.imag(complex_symbol)
 
-    if (arg >= 0) and (arg <= 90):
-        symbol = [0, 0]
-    elif (arg >= 90) and (arg <= 180):
-        symbol = [0, 1]
-    elif (arg <= -90) and (arg >= -180):
-        symbol = [1, 1]
-    elif (arg <= 0) and (arg >= -90):
-        symbol = [1, 0]
+    if imag >= 0:
+        if real >= 0:
+            symbol = [0, 0]
+        else:
+            symbol = [0, 1]
+    else:
+        if real >= 0:
+            symbol = [1, 0]
+        else:
+            symbol = [1, 1]
     
     return symbol
 
 
-def map_bit_array_to_byte(bit_array):
+def bit_array_to_byte(bit_array):
     """
     Convert an array of 8-bits into a byte
     """
@@ -88,6 +91,6 @@ def decode_symbol_sequence(symbol_sequence):
     bit_sequence = bit_sequence[0: num_bytes * 8]
 
     byte_sequence = numpy.reshape(bit_sequence, (num_bytes, 8))
-    byte_sequence = numpy.array(list(map(map_bit_array_to_byte, byte_sequence))).astype("uint8")
+    byte_sequence = numpy.array(list(map(bit_array_to_byte, byte_sequence))).astype("uint8")
     
     return parse_byte_sequence(byte_sequence)
