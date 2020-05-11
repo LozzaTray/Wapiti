@@ -2,5 +2,9 @@
 import numpy
 
 
-def write_to_file(filename, data_array):
-    numpy.savetxt(filename, data_array, delimiter=",")
+def write_binary(filename, data_array):
+    numpy.savetxt(filename, data_array, fmt="%d", newline="")
+
+
+def write_csv(filename, data_array):
+    numpy.savetxt(filename, data_array, fmt="%d", newline=",")
