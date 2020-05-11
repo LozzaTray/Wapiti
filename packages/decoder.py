@@ -10,9 +10,9 @@ def map_symbol_to_bits(complex_symbol):
         symbol = [0, 0]
     elif (arg >= 90) and (arg <= 180):
         symbol = [0, 1]
-    elif (arg <= 0) and (arg >= -90):
+    elif (arg <= -90) and (arg >= -180):
         symbol = [1, 1]
-    elif (arg <= 90) and (arg >= -180):
+    elif (arg <= 0) and (arg >= -90):
         symbol = [1, 0]
     
     return symbol
