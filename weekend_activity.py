@@ -19,9 +19,9 @@ def run():
     channel = read_csv_as_array(channel_file)
 
     print("OFDM demodulation...")
-    output_demod_file = os.path.join(curr_dir, "output/demodulated.txt")
+    #output_demod_file = os.path.join(curr_dir, "output/demodulated.txt")
     demodulated_sequence = demodulate(data_seq, channel)
-    write_rows(output_demod_file, demodulated_sequence)
+    #write_rows(output_demod_file, demodulated_sequence)
 
     print("QPSK decoding...")
     output_file = os.path.join(curr_dir, "output/decoded.bin")
@@ -29,11 +29,10 @@ def run():
     decoded = decoded_bytes.astype('uint8')
     decoded.tofile(output_file)
 
-    #print("Extracting raw data...")
-    #raw_output_file = os.path.join(curr_dir, "output/raw.bin")
-    #raw_data = decoded_sequence[136 : 136 + 8 * 38638]
-    #raw_bits = raw_data.astype('?')
-    #raw_bits.tofile(raw_output_file)
+    print("Extracting raw data...")
+    raw_output_file = os.path.join(curr_dir, "output/raw.wav")
+    raw_data = decoded[17 : 17 + 38638]
+    raw_data.tofile(raw_output_file)
 
 
 if __name__ == "__main__":
