@@ -31,7 +31,7 @@ def run():
 
     print("Extracting raw data...")
     raw_output_file = os.path.join(curr_dir, "output/raw.wav")
-    raw_data = decoded[17 : 17 + 38638]
+    raw_data = decoded[17 : 17 + 38638 + 1]
     raw_data.tofile(raw_output_file)
 
 
