@@ -17,3 +17,7 @@ This will create a virtual python environment inside a directory `.venv`. If you
 ```source .venv/bin/activate```
 
 A little prefix should have appeared to the left-hand side of your terminal telling you which environment you are in. You can leave the venv whenever you want with `deactivate`. While you are in the virtual environment any pip or python commands should use the venv version of python.
+
+## PyTest
+
+Testing is a vital part of development, we are going to use `pytest` for all our testing needs. The setup is heavily borrowed from the [pytest docs](https://docs.pytest.org/en/latest/goodpractices.html)
