@@ -13,9 +13,9 @@ def run():
 
     duration = int(input("Duration of recording (seconds): "))
 
-    chan = int(input("Number of channels to use (1 or 2): "))
+    channel_num = int(input("Number of channels to use (1 or 2): "))
     
-    record(duration, file_name_full, channels = chan)
+    record(duration, file_name_full, channels = channel_num)
     
     playback (file_name_full)
 
