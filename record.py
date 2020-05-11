@@ -1,5 +1,6 @@
 """Code for decoding data"""
 from packages.audio import record
+from packages.audio import playback
 import os
 
 curr_dir = os.path.dirname(__file__)
@@ -12,7 +13,9 @@ def run():
 
     duration = int(input("Duration of recording (seconds): "))
     
-    record(file_name_full, duration)
+    record(5, file_name_full)
+    
+    playback (file_name_full)
 
 
 
