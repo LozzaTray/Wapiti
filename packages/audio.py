@@ -1,7 +1,6 @@
 import pyaudio
 import wave
 
-
 def record(length, filename, rate = 44100, chunk = 1024, channels = 2, FORMAT = pyaudio.paInt16):
     """records audio and saves it to a file.
     Parameters: length (int, seconds), filename (string)"""
@@ -34,6 +33,8 @@ def record(length, filename, rate = 44100, chunk = 1024, channels = 2, FORMAT = 
     #clean up
     waveFile.close()
     
+    return frames
+    
 def playback(filename, chunk=1024):
     """play audio from wav file given filename (string)"""
     
@@ -50,10 +51,14 @@ def playback(filename, chunk=1024):
     data = wf.readframes(chunk) #read data
     
     #play audio
-    while data != '':
+    while data != b'':
         stream.write(data) #writing to the stream is what actually plays the sound
-        data = wf.readframes(chunk) 
+        data = wf.readframes(chunk)
         
+    print("EHWER")
+    
     #cleanup
     stream.close()    
     p.terminate()
+    
+    print("dsfsdsdfsdf")
