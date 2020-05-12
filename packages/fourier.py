@@ -1,6 +1,6 @@
 """Module for performing fourier analysis"""
-
 import numpy
+
 
 def dft(data_vector, N):
     """

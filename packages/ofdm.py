@@ -1,5 +1,5 @@
 """Module for performing ofdm tasks"""
-from .fourier import dft, idft
+from packages.fourier import dft
 import numpy as np
 
 
