@@ -34,6 +34,7 @@ def record(length, filename, rate = 44100, chunk = 1024, channels = 2, FORMAT = 
     waveFile.close()
     
     return frames
+
     
 def playback(filename, chunk=1024):
     """play audio from wav file given filename (string)"""
