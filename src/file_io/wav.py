@@ -3,14 +3,6 @@ import wave
 import pyaudio
 
 
-def read_wav_full(filename):
-    """reads in a wav file"""
-    file = wave.open(filename, mode='rb')
-    frames = file.readframes(file.getnframes())
-    file_params = file.getparams() #number of channels, sample width (in bytes), framerate, number of frames, compression type, compression name
-    return frames, file_params
-
-
 def read_wav(filename):
     """
     Reads in a wav file
@@ -25,17 +17,23 @@ def read_wav(filename):
     """
 
     wf = wave.open(filename, 'rb') #open file for reading
-    
-    p = pyaudio.PyAudio()
     num_frames = wf.getnframes()
     data_sequence = wf.readframes(num_frames)
-    p.terminate()
 
     return data_sequence, wf.getsampwidth(), wf.getnchannels(), wf.getframerate()
 
 
 def write_wav(filename, frames, channels, rate, wav_format):
-    """writes out a wav file"""
+    """
+    Writes out a wav file
+    Accepts:
+        filename (str)
+        frames (b'')
+        channels (int)
+        rate (num)
+        wav_fromat (pyaudio.format)
+    """
+
     #create file from datastream
     wf = wave.open(filename, 'wb')
     wf.setnchannels(channels)
