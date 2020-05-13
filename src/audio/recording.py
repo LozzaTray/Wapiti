@@ -10,19 +10,19 @@ class Recording:
     # Default props
     DEFAULT_RATE = 48000
     DEFAULT_CHUNK = 1024
-    DEFAULT_CHANNELS = 1
+    DEFAULT_NUM_CHANNELS = 1
     DEFAULT_FORMAT = pyaudio.paInt16
 
 
-    def __init__(self, frames, rate, channels, audio_format):
+    def __init__(self, frames, rate, num_channels, audio_format):
         self.frames = frames
         self.rate = rate
-        self.channels = channels
+        self.channels = num_channels
         self.audio_format = audio_format
 
 
     @classmethod
-    def from_mic(cls, duration, channels=DEFAULT_CHANNELS, rate=DEFAULT_RATE, chunk=DEFAULT_CHUNK, audio_format=DEFAULT_FORMAT):
+    def from_mic(cls, duration, num_channels=DEFAULT_NUM_CHANNELS, rate=DEFAULT_RATE, chunk=DEFAULT_CHUNK, audio_format=DEFAULT_FORMAT):
         """Initialise recording from mic"""
 
         p = pyaudio.PyAudio() #create pyaudio object
@@ -30,7 +30,7 @@ class Recording:
         #start recording
         stream = p.open(
             format=audio_format, 
-            channels=channels,
+            channels=num_channels,
             rate=rate,
             frames_per_buffer=chunk,
             input=True
@@ -55,7 +55,7 @@ class Recording:
         return cls(
             frames=frames,
             rate=rate,
-            channels=channels,
+            num_channels=num_channels,
             audio_format=audio_format
         )
 
@@ -68,7 +68,7 @@ class Recording:
         return cls(
             frames=data_sequence,
             rate=frame_rate,
-            channels=num_channels,
+            num_channels=num_channels,
             audio_format=pyaudio.get_format_from_width(sample_width)
         )
 
