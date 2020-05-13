@@ -2,6 +2,7 @@
 import os
 from modulation.fourier import dft
 from audio.audio import record, playback
+from file_io.wav import read_wav
 import wave
 from config import OUTPUT_DIR
 
@@ -18,12 +19,11 @@ def run():
     record(duration, file_name_full, channels=channel_num)
     print("Done")
 
-    print("Playing back")
-    playback(file_name_full)
-    file = wave.open(file_name_full, mode='rb')
-    nof = file.getnframes() #gets number of frames
-    frame_bytes = file.readframes(nof)
-    print(dft(frame_bytes, nof))
+    #print("Playing back")      #not necessary right now
+    #playback(file_name_full)   #add in later if we want
+    file_info = read_wav(file_name_full)
+    print(file_info[1:4])
+
 
 
 if __name__ == "__main__":
