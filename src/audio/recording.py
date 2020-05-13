@@ -71,6 +71,16 @@ class Recording:
             num_channels=num_channels,
             audio_format=pyaudio.get_format_from_width(sample_width)
         )
+        
+    @classmethod
+    def from_list(cls, data_sequence, frame_rate):
+        """Initialise audio from list"""
+        return cls(
+                frames = data_sequence, 
+                rate = frame_rate,
+                num_channels=1,
+                audio_format=pyaudio.paInt16
+            )
 
 
     def play(self):
