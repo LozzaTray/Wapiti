@@ -1,18 +1,22 @@
 """Module for performing ofdm tasks"""
-from src.modulation.fourier import dft
+from src.modulation.fourier import dft, idft
 import numpy as np
 
 
 def insert_cyclic_prefix(x, K):
     """inserts a cyclic prefix of length K into the data sequence x
     allows linear convolution to match cyclic"""
-    raise NotImplementedError
+    x_cyclic = np.concatenate((x[-K:], x))
+    return x_cyclic
 
 
 def modulate(data_sequence, K):
     """encodes the data_sequence X into the the time sequence x 
     by taking the iDFT and inserting a cyclic prefix of length K"""
-    raise NotImplementedError
+    N = len(data_sequence)
+    x = idft(data_sequence, N)
+    x_cyclic = insert_cyclic_prefix(x, K)
+    return x_cyclic
 
 
 def demodulate(received_sequence, channel_impulse_response, N=1024, K=32):
