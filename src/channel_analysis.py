@@ -1,8 +1,8 @@
 """code for doing the channel analysis"""
 import os
-from modulation.fourier import dft
-from audio.audio import record, playback
-from file_io.wav import read_wav
+from src.modulation.fourier import dft
+from src.audio.audio import record, playback
+from src.file_io.wav import read_wav
 import wave
 from config import OUTPUT_DIR
 

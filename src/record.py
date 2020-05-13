@@ -1,5 +1,5 @@
 """Code for recording and playing back audio"""
-from audio.audio import record, playback
+from src.audio.audio import record, playback
 from src.audio.recording import Recording
 from config import OUTPUT_DIR
 import os
