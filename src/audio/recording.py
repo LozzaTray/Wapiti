@@ -10,7 +10,7 @@ class Recording:
     # Default props
     DEFAULT_RATE = 48000
     DEFAULT_CHUNK = 1024
-    DEFAULT_CHANNELS = 2
+    DEFAULT_CHANNELS = 1
     DEFAULT_FORMAT = pyaudio.paInt16
 
 
@@ -106,7 +106,15 @@ class Recording:
 
     def display(self):
         """Displays recording"""
-        signal = numpy.fromstring(self.frames, numpy.int16)
         plt.figure(1)
-        plt.plot(signal)
+        
+        plt.title("Rate: {} Hz, {}-channels, 16-bit signed int".format(self.rate, self.channels))
+        
+        signal = numpy.fromstring(self.frames, numpy.int16)
+        time = numpy.linspace(0, len(signal) / self.rate, num=len(signal))
+        plt.plot(time, signal)
+        plt.xlabel("Time (s)")
+        plt.ylabel("Sample Magnitude")
+        plt.grid()
+
         plt.show()
