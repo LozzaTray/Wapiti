@@ -1,11 +1,10 @@
 """Code for decoding data"""
-from packages.parser import read_csv_as_array
-from packages.ofdm import demodulate
-from packages.output import write_binary, write_rows, write_bytes
-from packages.decoder import decode_symbol_sequence
+from config import DATA_DIR, OUTPUT_DIR
+from file_io.parser import read_csv_as_array
+from modulation.ofdm import demodulate
+from file_io.output import write_binary, write_rows, write_bytes
+from coding.decoder import decode_symbol_sequence
 import os
-
-curr_dir = os.path.dirname(__file__)
 
 
 def run():
@@ -13,11 +12,11 @@ def run():
     group = input("Which group are you: ")
 
     print("Reading data file...")
-    data_seq_file = os.path.join(curr_dir, "data/gr" + group + "file.csv")
+    data_seq_file = os.path.join(DATA_DIR, "gr" + group + "file.csv")
     data_seq = read_csv_as_array(data_seq_file)
 
     print("Reading channel file...")
-    channel_file = os.path.join(curr_dir, "data/gr" + group + "channel.csv")
+    channel_file = os.path.join(DATA_DIR, "gr" + group + "channel.csv")
     channel = read_csv_as_array(channel_file)
 
     print("OFDM demodulation...")
@@ -28,7 +27,7 @@ def run():
     print("Successfully decoded: " + title + " (" + str(file_length) + " bytes)")
     
     print("Saving file...")
-    output_file = os.path.join(curr_dir, "output/" + title)
+    output_file = os.path.join(OUTPUT_DIR, title)
     file_bytes.tofile(output_file)
 
     print("Done")

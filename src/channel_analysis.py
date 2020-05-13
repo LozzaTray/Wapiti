@@ -1,7 +1,7 @@
 """code for doing the channel analysis"""
 import os
-from packages.fourier import dft
-from packages.audio import record, playback
+from modulation.fourier import dft
+from audio.audio import record, playback
 import wave
 
 

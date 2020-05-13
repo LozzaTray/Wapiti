@@ -1,13 +1,7 @@
 README.md
 setup.py
-packages/__init__.py
-packages/audio.py
-packages/decoder.py
-packages/fourier.py
-packages/ofdm.py
-packages/output.py
-packages/parser.py
 test/test_decoder.py
+test/test_fourier.py
 test/test_ofdm.py
 wapiti.egg-info/PKG-INFO
 wapiti.egg-info/SOURCES.txt

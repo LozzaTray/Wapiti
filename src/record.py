@@ -1,6 +1,6 @@
 """Code for decoding data"""
-from packages.audio import record
-from packages.audio import playback
+from audio.audio import record, playback
+from file_io.output import display_recording
 import os
 
 curr_dir = os.path.dirname(__file__)
@@ -14,10 +14,9 @@ def run():
     duration = int(input("Duration of recording (seconds): "))
 
     channel_num = int(input("Number of channels to use (1 or 2): "))
-    
-    record(duration, file_name_full, channels = channel_num)
-    
-    playback (file_name_full)
+    recording = record(duration, file_name_full, channels = channel_num)
+    display_recording(recording)
+    playback(file_name_full)
 
 
 

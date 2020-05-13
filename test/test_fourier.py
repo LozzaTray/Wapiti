@@ -1,4 +1,4 @@
-from packages.fourier import dft, idft
+from src.modulation.fourier import dft, idft
 
 
 def test_dft():

@@ -1,4 +1,4 @@
-from packages.ofdm import demodulate, insert_cyclic_prefix, modulate
+from src.modulation.ofdm import demodulate, insert_cyclic_prefix, modulate
 
 
 def test_demodulate():
