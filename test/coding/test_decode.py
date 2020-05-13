@@ -1,4 +1,4 @@
-from src.coding.decoder import decode_symbol, bit_array_to_byte, parse_byte_sequence
+from src.coding.decode import decode_symbol, bit_array_to_byte, parse_byte_sequence
 
 
 def test_decode_symbol():

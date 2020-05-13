@@ -1,9 +1,8 @@
 """Code for decoding data"""
 from config import DATA_DIR, OUTPUT_DIR
 from src.file_io.parser import read_csv_as_array
-from src.modulation.ofdm import demodulate_sequence
-from src.file_io.output import write_binary, write_rows, write_bytes
-from src.coding.decoder import decode_symbol_sequence
+from src.ofdm.demodulate import demodulate_sequence
+from src.coding.decode import decode_symbol_sequence
 import os
 
 
