@@ -1,4 +1,4 @@
-from src.modulation.ofdm import demodulate, insert_cyclic_prefix, modulate
+from src.modulation.ofdm import demodulate_sequence, insert_cyclic_prefix, modulate_sequence
 
 
 def test_demodulate():
@@ -7,7 +7,7 @@ def test_demodulate():
 
     received_sequence = [1, 1, 1, 1, 1, 1, 1, 1]
     channel_response = [1]
-    demodulated_sequence = demodulate(received_sequence, channel_response, N=N, K=K)
+    demodulated_sequence = demodulate_sequence(received_sequence, channel_response, N=N, K=K)
     assert len(demodulated_sequence) == N/2 - 1
 
 
@@ -20,6 +20,9 @@ def test_insert_cyclic_prefix():
 
 def test_modulate():
     K = 2
+    N = 4
+    M = int(N/2) - 1 # number of useful symbols in each block
+    P = N + K # size of each ofdm block
     x = [1, 2, 3, 4, 5, 6]
-    y = modulate(x, K)
-    assert len(y) == len(x) + K
+    y = modulate_sequence(x, N, K)
+    assert len(y) == P * len(x) / M

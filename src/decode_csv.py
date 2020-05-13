@@ -1,7 +1,7 @@
 """Code for decoding data"""
 from config import DATA_DIR, OUTPUT_DIR
 from src.file_io.parser import read_csv_as_array
-from src.modulation.ofdm import demodulate
+from src.modulation.ofdm import demodulate_sequence
 from src.file_io.output import write_binary, write_rows, write_bytes
 from src.coding.decoder import decode_symbol_sequence
 import os
@@ -20,7 +20,7 @@ def run():
     channel = read_csv_as_array(channel_file)
 
     print("OFDM demodulation...")
-    demodulated_sequence = demodulate(data_seq, channel)
+    demodulated_sequence = demodulate_sequence(data_seq, channel)
 
     print("QPSK decoding...")
     title, file_length, file_bytes = decode_symbol_sequence(demodulated_sequence)
