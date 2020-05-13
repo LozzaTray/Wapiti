@@ -8,7 +8,7 @@ def read_wav_full(filename):
     file = wave.open(filename, mode='rb')
     frames = file.readframes(file.getnframes())
     file_params = file.getparams() #number of channels, sample width (in bytes), framerate, number of frames, compression type, compression name
-    return frames, file_params[0:4]
+    return frames, file_params
 
 
 def read_wav(filename, chunk=1024):
