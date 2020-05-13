@@ -1,6 +1,6 @@
 """Code for recording and playing back audio"""
 from audio.audio import record, playback
-from file_io.output import display_recording
+from src.audio.recording import Recording
 from config import OUTPUT_DIR
 import os
 
@@ -12,9 +12,9 @@ def run():
     duration = int(input("Duration of recording (seconds): "))
     channel_num = int(input("Number of channels to use (1 or 2): "))
 
-    recording = record(duration, file_name_full, channels = channel_num)
-    #display_recording(recording)
-    playback(file_name_full)
+    recording = Recording.from_mic(duration=duration, channels=channel_num)
+    recording.play()
+    recording.save(file_name_full)
 
 
 

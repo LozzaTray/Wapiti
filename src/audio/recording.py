@@ -101,3 +101,7 @@ class Recording:
             rate=self.rate,
             wav_format=self.audio_format
         )
+
+
+    def display(self):
+        """Displays recording"""
