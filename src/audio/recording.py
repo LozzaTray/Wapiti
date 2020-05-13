@@ -1,12 +1,14 @@
 """module for recording and playing wav objects"""
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
+import matplotlib.pyplot as plt
+import numpy
 
 
 class Recording:
 
     # Default props
-    DEFAULT_RATE = 44100
+    DEFAULT_RATE = 48000
     DEFAULT_CHUNK = 1024
     DEFAULT_CHANNELS = 2
     DEFAULT_FORMAT = pyaudio.paInt16
@@ -43,6 +45,7 @@ class Recording:
             frames.append(data)
         
         print ("Finished recording")
+        frames = b"".join(frames)
     
         #stop recording
         stream.stop_stream()
@@ -83,9 +86,7 @@ class Recording:
             output = True
         )
 
-        # write to stream one block at a time
-        for frame in self.frames:
-            stream.write(frame)
+        stream.write(self.frames)
         
         #cleanup
         stream.close()    
@@ -105,3 +106,7 @@ class Recording:
 
     def display(self):
         """Displays recording"""
+        signal = numpy.fromstring(self.frames, numpy.int16)
+        plt.figure(1)
+        plt.plot(signal)
+        plt.show()

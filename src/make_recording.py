@@ -14,6 +14,7 @@ def run():
 
     recording = Recording.from_mic(duration=duration, channels=channel_num)
     recording.play()
+    recording.display()
     recording.save(file_name_full)
 
 

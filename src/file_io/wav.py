@@ -11,7 +11,7 @@ def read_wav_full(filename):
     return frames, file_params
 
 
-def read_wav(filename, chunk=1024):
+def read_wav(filename):
     """
     Reads in a wav file
     Accepts:
@@ -25,15 +25,10 @@ def read_wav(filename, chunk=1024):
     """
 
     wf = wave.open(filename, 'rb') #open file for reading
-    p = pyaudio.PyAudio() #create pyaudio object
-
-    data_sequence = []
-    data = wf.readframes(chunk) #read data
     
-    while data != b'':
-        data = wf.readframes(chunk)
-        data_sequence.append(data)
-    
+    p = pyaudio.PyAudio()
+    num_frames = wf.getnframes()
+    data_sequence = wf.readframes(num_frames)
     p.terminate()
 
     return data_sequence, wf.getsampwidth(), wf.getnchannels(), wf.getframerate()
@@ -46,7 +41,7 @@ def write_wav(filename, frames, channels, rate, wav_format):
     wf.setnchannels(channels)
     wf.setsampwidth(pyaudio.get_sample_size(wav_format))
     wf.setframerate(rate)
-    wf.writeframes(b''.join(frames))
+    wf.writeframes(frames)
     
     #clean up
     wf.close()
