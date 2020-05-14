@@ -19,7 +19,7 @@ def idft(data_vector, N):
 
 
 def pad_so_divisible(x, M):
-    """pads x with zeos to length divisible M"""
+    """pads x with zeros to length divisible M"""
     original_length = len(x)
     excess = original_length % M
 
@@ -27,9 +27,8 @@ def pad_so_divisible(x, M):
         # already divisible
         return x
 
-    new_length = original_length + (M - excess)
-    arr = np.zeros(new_length)
-    arr[:original_length] = x
+    padding = np.zeros(M - excess)
+    arr = np.concatenate((x, padding))
     return arr
 
 
