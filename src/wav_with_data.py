@@ -12,8 +12,8 @@ def run():
     # file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
 
     # setting the data values we want to transmit
-    more_data = [0,0,0,0,0,1,0,1,1,1,1,1,1,0,1,0]
-    QPSK = encode_bit_sequence(more_data)
+    data = b'0000010111111010'
+    QPSK = encode_bit_sequence(data)
     print(QPSK)
     print("\n")
     #modulated_data = modulate_sequence(binary_data,len(binary_data)/2,10)
