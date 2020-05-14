@@ -1,6 +1,7 @@
 """module for recording and playing wav objects"""
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
+from scipy.signal import correlate as scipy_correlate
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -116,13 +117,13 @@ class Recording:
         )
 
 
-    def display(self):
+    def display(self, title=""):
         """Displays recording"""
-        plt.figure(1)
+        plt.figure()
         
-        plt.title("Rate: {} Hz, {}-channels, 16-bit signed int".format(self.rate, self.channels))
+        plt.title("{} (Rate: {} Hz, {}-channels, 16-bit signed int)".format(title, self.rate, self.channels))
         
-        signal = np.fromstring(self.frames, np.int16)
+        signal = self.get_frames_as_int16()
         time = np.linspace(0, len(signal) / self.rate, num=len(signal))
         plt.plot(time, signal)
         plt.xlabel("Time (s)")
@@ -130,3 +131,20 @@ class Recording:
         plt.grid()
 
         plt.show()
+
+
+    def correlate(self, reference_recording):
+        signal = self.get_frames_as_int16()
+        reference = reference_recording.get_frames_as_int16()
+        correlation = scipy_correlate(signal, reference, mode="valid")
+
+        self.display("Real signal")
+        self.display("Reference signal")
+
+        plt.figure()
+        plt.plot(correlation)
+        plt.show()
+
+
+    def get_frames_as_int16(self):
+        return np.fromstring(self.frames, np.int16)

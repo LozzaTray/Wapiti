@@ -19,6 +19,7 @@ def read_wav(filename):
     wf = wave.open(filename, 'rb') #open file for reading
     num_frames = wf.getnframes()
     data_sequence = wf.readframes(num_frames)
+    wf.close()
 
     return data_sequence, wf.getsampwidth(), wf.getnchannels(), wf.getframerate()
 
