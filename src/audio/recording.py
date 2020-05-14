@@ -4,12 +4,13 @@ from src.file_io.wav import read_wav, write_wav
 from scipy.signal import correlate as scipy_correlate
 import matplotlib.pyplot as plt
 import numpy as np
+from config import SAMPLING_FREQ
 
 
 class Recording:
 
     # Default props
-    DEFAULT_RATE = 48000
+    DEFAULT_RATE = SAMPLING_FREQ
     DEFAULT_CHUNK = 1024
     DEFAULT_NUM_CHANNELS = 1
     DEFAULT_FORMAT = pyaudio.paInt16

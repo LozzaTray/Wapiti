@@ -13,8 +13,8 @@ def run():
 
     recording = Recording.from_mic(duration=duration)
     recording.play()
-    recording.display()
     recording.save(file_name_full)
+    recording.display()
 
 
 if __name__ == "__main__":
