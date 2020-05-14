@@ -1,6 +1,7 @@
 """code to generate artificial recording for transmitting known data"""
 from src.audio.recording import Recording
-from src.ofdm.modulate import modulate_block
+from src.ofdm.modulate import modulate_sequence
+from src.coding.encode import encode_bit_sequence
 from config import OUTPUT_DIR
 import os
 
@@ -11,20 +12,12 @@ def run():
     # file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
 
     # setting the data values we want to transmit
-    binary_data = [0, 0b00, 1, 0b01, 3, 0b11, 2, 0b10]
-    QPSK_data = []
-    print(binary_data)
+    more_data = [0,0,0,0,0,1,0,1,1,1,1,1,1,0,1,0]
+    QPSK = encode_bit_sequence(more_data)
+    print(QPSK)
     print("\n")
-    for i in range(len(binary_data)):
-        d = binary_data[i]
-        if d == 0: QPSK_data.append(complex(1, 1))
-        if d == 1: QPSK_data.append(complex(-1, 1))
-        if d == 2: QPSK_data.append(complex(1, -1))
-        if d == 3: QPSK_data.append(complex(-1, -1))
-    print(QPSK_data)
-    print("\n")
-    modulated_data = modulate_block(binary_data,len(binary_data)/2,10)
-    print(modulated_data)
+    #modulated_data = modulate_sequence(binary_data,len(binary_data)/2,10)
+    #print(modulated_data)
     print("\n")
 
     # recording.display()
