@@ -4,7 +4,7 @@ import numpy
 
 def encode_bits(two_bits):
     """
-    Checks argument and or magnitude and returns
+    encodes a length 2 bit string into 1 QPSK symbol
     """
     if two_bits[:1] == b'0':
         if two_bits[1:2] == b'0':
