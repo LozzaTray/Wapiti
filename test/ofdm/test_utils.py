@@ -37,3 +37,7 @@ def test_pad_so_divisible():
     x = [1, 2, 3, 4]
     y = pad_so_divisible(x, M)
     assert list(y) == list([1, 2, 3, 4, 0, 0])
+
+    x = [1, 2, 3, 4, 5, 6, 7]
+    y = pad_so_divisible(x, M)
+    assert list(y) == list([1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0])
