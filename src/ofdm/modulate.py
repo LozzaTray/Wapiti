@@ -58,4 +58,4 @@ def modulate_sequence(data_sequence, N=1024, K=32):
         modulated_block = modulate_block(block, N, K)
         modulated_sequence = np.concatenate((modulated_sequence, modulated_block))
 
-    return modulated_sequence
+    return np.real_if_close(modulated_sequence)
