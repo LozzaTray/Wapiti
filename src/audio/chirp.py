@@ -15,6 +15,6 @@ def generate_chirp_array_as_int16(duration, sampling_freq, f0, f1):
     """
 
     t = np.linspace(0, duration, int(duration * sampling_freq))
-    data = (scipy.signal.chirp(t, f0, duration, f1, method='linear', phi=0, vertex_zero=True)*(2**15 - 1)).astype(np.int16)
-    scaled_data = (data*(2**15 - 1)).astype(np.int16)
-    return scaled_data
+    raw_signal = scipy.signal.chirp(t, f0, duration, f1, method='linear', phi=0, vertex_zero=True)
+    scaled_signal = (raw_signal*(2**15 - 1)).astype(np.int16)
+    return scaled_signal
