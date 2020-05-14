@@ -17,11 +17,11 @@ def encode_bits(two_bits):
         return complex(-1, -1)
 
 
-def encode_bit_sequence(bit_sequence):
+def encode_bit_string(bit_sequence):
     """
-    encodes a bit sequence into an array of complex symbols; takes input of the form b'xxx...xxx'
+    encodes a bit string into an array of complex symbols; takes input of the form b'xxx...xxx'
     """
-    # bits = bit_sequence
+
     # check length of bits is even
     if len(bit_sequence) % 2 != 0:
         raise ValueError("bit sequence must be an even number of bits!")
