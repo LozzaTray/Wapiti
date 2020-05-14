@@ -2,7 +2,7 @@
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
 import matplotlib.pyplot as plt
-import numpy
+import numpy as np
 
 
 class Recording:
@@ -71,16 +71,18 @@ class Recording:
             num_channels=num_channels,
             audio_format=pyaudio.get_format_from_width(sample_width)
         )
+       
         
     @classmethod
     def from_list(cls, data_sequence, frame_rate):
         """Initialise audio from list"""
+        bit_string = b"".join(data_sequence.astype(np.int16))
         return cls(
-                frames = data_sequence, 
-                rate = frame_rate,
-                num_channels=1,
-                audio_format=pyaudio.paInt16
-            )
+            frames = bit_string, 
+            rate = frame_rate,
+            num_channels=1,
+            audio_format=pyaudio.paInt16
+        )
 
 
     def play(self):
@@ -120,8 +122,8 @@ class Recording:
         
         plt.title("Rate: {} Hz, {}-channels, 16-bit signed int".format(self.rate, self.channels))
         
-        signal = numpy.fromstring(self.frames, numpy.int16)
-        time = numpy.linspace(0, len(signal) / self.rate, num=len(signal))
+        signal = np.fromstring(self.frames, np.int16)
+        time = np.linspace(0, len(signal) / self.rate, num=len(signal))
         plt.plot(time, signal)
         plt.xlabel("Time (s)")
         plt.ylabel("Sample Magnitude")

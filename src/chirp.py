@@ -6,18 +6,22 @@ import matplotlib.pyplot as plt
 import pyaudio
 
 def run():
+    fs = 48000
+    T = 1
+    t = np.linspace(0, T, int(T * fs))
+    f0 = 20
+    f1 = 2000
+    t1 = T
+    data = (scipy.signal.chirp(t, f0, t1, f1, method='linear', phi=0, vertex_zero=True)*(2**15 - 1)).astype(np.int16)
+    print(data)
     
-    t1 = 5
-    f0 = 400
-    f1 = 10000
-    fs = 192000
-    t = np.linspace(0, t1, fs*t1)
-    data = scipy.signal.chirp(t, f0, t1, f1, method='linear', phi=0, vertex_zero=True).astype(np.float16)
-    #print(data)
+    #plt.figure(1)
     #plt.plot(data)
+    #plt.show
     
     recording = Recording.from_list(data, fs)
     recording.play()
+    recording.display()
     
 
 
