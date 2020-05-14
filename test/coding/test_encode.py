@@ -12,7 +12,7 @@ def test_encode_bits():
     
 
 def test_encode_bit_string():
-    """simple check for the decoder, unlikely to fail"""
+    """simple check for the encoder, unlikely to fail"""
     bit_string = b"00011110"
     expected = [1+1j, -1+1j, -1-1j, 1-1j]
     response = encode_bit_string(bit_string)
