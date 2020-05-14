@@ -24,8 +24,7 @@ def encode_bit_sequence(bit_sequence):
     # make sure the bit sequence is flattened just in case
     try:
         bits = bit_sequence.flatten()
-    except:
-        AttributeError
+    except AttributeError:
         bits = bit_sequence
 
     # bits = bit_sequence
