@@ -53,8 +53,7 @@ def modulate_sequence(data_sequence, N=1024, K=32):
     for i in range(0, num_blocks):
         lower_index = i * M
         upper_index = lower_index + M
-
-        block = data_sequence[lower_index : upper_index]
+        block = padded_sequence[lower_index : upper_index]
         modulated_block = modulate_block(block, N, K)
         modulated_sequence = np.concatenate((modulated_sequence, modulated_block))
 
