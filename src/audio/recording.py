@@ -121,3 +121,13 @@ class Recording:
 
     def get_frames_as_int16(self):
         return np.fromstring(self.frames, np.int16)
+    
+    def append_recording(self, rec2):
+        """Append two 'Recording' instances together"""
+        
+        assert (self.channels == rec2.channels), "Number of channels does not match ({} and {})".format(self.channels, rec2.channels)
+        assert (self.rate == rec2.rate), "Rates do not match ({} and {})".format(self.rate, rec2.rate)
+        assert (self.audio_format == rec2.audio_format), "Audio formats do not match ({} and {})".format(self.audio_format, rec2.audio_format)
+        
+        self.frames += rec2.frames
+        

@@ -10,9 +10,12 @@ def run():
     file_name_short = input("File name to open (.wav): ")
     file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
 
-    recording = Recording.from_file(file_name_full)
-    recording.play()
-    plot_recording(recording)
+    recording1 = Recording.from_file(file_name_full)
+    recording1.play()
+    
+    recording1.append_recording(recording1)
+    
+    recording1.play()
 
 
 if __name__ == "__main__":
