@@ -13,14 +13,14 @@ def decode_symbol(complex_symbol):
 
     if imag >= 0:
         if real >= 0:
-            symbol = b'00'
+            symbol = format(0, '02b')
         else:
-            symbol = b'01'
+            symbol = format(1, '02b')
     else:
         if real >= 0:
-            symbol = b'10'
+            symbol = format(2, '02b')
         else:
-            symbol = b'11'
+            symbol = format(3, '02b')
     
     return symbol
 
@@ -30,10 +30,9 @@ def decode_symbol_sequence(symbol_sequence):
     decodes the symbol sequence, output of the form b'xxx...xxx'
     """
 
-    bits = b''
     bit_sequence = numpy.array(list(map(decode_symbol, symbol_sequence)))
-
-    for i in range(len(bit_sequence)):
-        bits += bit_sequence[i]
+    bits = bit_sequence[0]
+    for i in range(len(bit_sequence)-1):
+        bits += bit_sequence[i+1]
 
     return bits

@@ -14,23 +14,24 @@ def run():
     # file_name_short = input("File name to save (.wav): ")
     # file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
 
-    # setting the sampling frequency we want
-    samp_freq = SAMPLING_FREQ
     # dummy data
-    data = text_to_bin("Wapiti")
+    #data = text_to_bin("Wapiti")
+    data = format(1530, '016b')
+    print(data)
     # making a long data file
     for i in range(10):
         data += data
-    # doing the encoding and modulation
     print("data fully created")
+    # doing the encoding and modulation
     QPSK = encode_bit_string(data)
+    print(QPSK)
     print("data encoded into QPSK")
-    modulated_data = modulate_sequence(QPSK, N=100, K=1000)
+    modulated_data = modulate_sequence(QPSK, N=1024, K=1000)
     print("QPSK data modulated; ready for playback")
     # now make the recording and play/display, can probably save this as wav, or slot it between chirps
-    recording = Recording.from_list(modulated_data,samp_freq)
-    recording.play()
-    plot_recording(recording)
+    wav = Recording.from_list(modulated_data, SAMPLING_FREQ)
+    wav.play()
+    plot_recording(wav)
 
 
 if __name__ == "__main__":
