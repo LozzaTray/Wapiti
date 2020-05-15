@@ -1,5 +1,6 @@
 """Code for recording and playing back audio"""
 from src.audio.recording import Recording
+from src.plotting.plot_recording import plot_recording
 from config import OUTPUT_DIR
 import os
 
@@ -14,7 +15,8 @@ def run():
     recording = Recording.from_mic(duration=duration)
     recording.play()
     recording.save(file_name_full)
-    recording.display()
+    
+    plot_recording(recording)
 
 
 if __name__ == "__main__":

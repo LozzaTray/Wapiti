@@ -1,5 +1,6 @@
 """Code for recording and playing back audio"""
 from src.audio.recording import Recording
+from src.plotting.plot_recording import plot_recording
 from config import OUTPUT_DIR
 import os
 
@@ -11,7 +12,7 @@ def run():
 
     recording = Recording.from_file(file_name_full)
     recording.play()
-    recording.display()
+    plot_recording(recording)
 
 
 if __name__ == "__main__":

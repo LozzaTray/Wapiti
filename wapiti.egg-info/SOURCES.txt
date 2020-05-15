@@ -1,8 +1,6 @@
 README.md
 setup.py
-test/test_decoder.py
-test/test_fourier.py
-test/test_ofdm.py
+test/test_jossy_format.py
 wapiti.egg-info/PKG-INFO
 wapiti.egg-info/SOURCES.txt
 wapiti.egg-info/dependency_links.txt

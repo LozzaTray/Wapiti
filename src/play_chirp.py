@@ -1,6 +1,7 @@
 """Code for recording and playing back audio"""
 from src.audio.recording import Recording
 from src.audio.chirp import generate_chirp_array_as_int16
+from src.plotting.plot_recording import plot_recording
 import scipy.signal
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,7 +30,7 @@ def run():
     file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
 
     recording.save(file_name_full)
-    recording.display()
+    plot_recording(recording)
     
 
 

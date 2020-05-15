@@ -3,6 +3,7 @@ from src.audio.recording import Recording
 from src.ofdm.modulate import modulate_sequence
 from src.coding.encode import encode_bit_string
 from src.coding.decode import decode_symbol_sequence
+from src.plotting.plot_recording import plot_recording
 from config import OUTPUT_DIR
 import os
 
@@ -28,7 +29,7 @@ def run():
     # now make the recording and play/display, can probably save this as wav, or slot it between chirps
     recording = Recording.from_list(modulated_data,samp_freq)
     recording.play()
-    recording.display()
+    plot_recording(recording)
 
 
 if __name__ == "__main__":
