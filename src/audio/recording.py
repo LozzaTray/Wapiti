@@ -116,7 +116,7 @@ class Recording:
         signal = self.get_frames_as_int16()
         reference = reference_recording.get_frames_as_int16()
         # astype(int64) needed to prevent overflow
-        correlation = scipy_correlate(signal.astype(np.int64), reference, mode="same")
+        correlation = scipy_correlate(signal.astype(np.int64), reference, mode="full")
         return correlation
 
     def get_frames_as_int16(self):

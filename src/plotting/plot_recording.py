@@ -43,18 +43,20 @@ def plot_correlation(signal_recording: Recording, reference_recording: Recording
         raise TypeError("Reference is not instance of {}".format(Recording))
     
     signal = signal_recording.get_frames_as_int16()
-    reference = reference_recording.get_frames_as_int16()
-
     signal_time = _gen_time_array(len(signal), signal_recording.rate)
-    reference_time = _gen_time_array(len(reference), reference_recording.rate)
 
     correlation = signal_recording.correlate(reference_recording)
+    correlation_time = _gen_time_array(len(correlation), signal_recording.rate)
 
-    plt.figure()
-    plt.subplot(311)
-    plt.plot(signal_time, signal)
-    plt.subplot(312)
-    plt.plot(reference_time, reference)
-    plt.subplot(313)
-    plt.plot(signal_time, correlation)
+    fig, (ax1, ax2) = plt.subplots(2, sharex=True)
+    fig.suptitle(_gen_title_string(signal_recording, "Correlation of signal with reference"))
+
+    ax1.plot(signal_time, signal)
+    ax1.set(title="Signal", ylabel="Sample (int16)")
+
+    ax2.plot(correlation_time, correlation)
+    ax2.set(title="Correlation", ylabel="Correlation (int64)", xlabel="Time (s)")
+
     plt.show()
+
+    plot_recording(reference_recording, "Reference Signal")
