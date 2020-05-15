@@ -14,7 +14,6 @@ def run():
     recording1.play()
     
     recording1.append_recording(recording1)
-    
     recording1.play()
 
 

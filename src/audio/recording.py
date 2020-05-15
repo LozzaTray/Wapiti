@@ -130,4 +130,3 @@ class Recording:
         assert (self.audio_format == rec2.audio_format), "Audio formats do not match ({} and {})".format(self.audio_format, rec2.audio_format)
         
         self.frames += rec2.frames
-        
