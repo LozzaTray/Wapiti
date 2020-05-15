@@ -6,7 +6,7 @@ def encode_bits(two_bits):
     """
     encodes a length 2 bit string into 1 QPSK symbol
     """
-    if two_bits[:1] == b'0':
+    if two_bits[0:1] == b'0':
         if two_bits[1:2] == b'0':
             return complex(1, 1)
         else:
@@ -27,7 +27,7 @@ def encode_bit_string(bit_sequence):
         raise ValueError("bit sequence must be an even number of bits!")
 
     symbol_sequence = []
-    i = 0
+    i = 2
     while i < len(bit_sequence):
         symbol_sequence.append(encode_bits(bit_sequence[i:i + 2]))
         i += 2
