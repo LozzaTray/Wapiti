@@ -120,6 +120,21 @@ class Recording:
         correlation = scipy_correlate(signal.astype(np.int64), reference, mode="full")
         return correlation
 
+    def extract_data_sequence(self, reference_recording, D):
+        """
+        extracts the data_sequence
+        D - length of data block following first chirp
+        """
+        correlation_arr = self.correlate(reference_recording)
+        index_of_max = np.argmax(correlation_arr)
+        data_arr = self.get_frames_as_int16()
+        
+        data_start = index_of_max + 1
+        data_end = data_start + D
+
+        return data_arr[data_start : data_end]
+
+
     def get_frames_as_int16(self):
         return np.fromstring(self.frames, np.int16)
     
