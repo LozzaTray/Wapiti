@@ -2,7 +2,7 @@
 from src.make_recording import run as make_recording
 from src.open_recording import run as open_recording
 from src.play_chirp import run as gen_chirp
-#import concatenate
+from src.concatenate import run as concatenate
 from src.correlate import run as correlate
 from src.decode_csv import run as decode_csv
 
@@ -41,7 +41,7 @@ def run():
         elif (option == "3"):
             gen_chirp()
         elif (option == "4"):
-            pass # must implement
+           concatenate()
         elif (option == "5"):
             correlate()
         elif (option == "6"):
