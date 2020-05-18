@@ -14,9 +14,6 @@ from config import SAMPLING_FREQ
 
 def run():
     """main loop"""
-    # file_name_short = input("File name to save (.wav): ")
-    # file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
-
     # dummy data
     data = text_to_bin("Wapiti")
     #data = format(1530, '016b')
