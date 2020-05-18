@@ -27,7 +27,7 @@ def decode_symbol(complex_symbol):
 
 def decode_symbol_sequence(symbol_sequence):
     """
-    decodes the symbol sequence, output of the form b'xxx...xxx'
+    decodes the symbol sequence, output of the form 'xxx...xxx'
     """
 
     bit_sequence = numpy.array(list(map(decode_symbol, symbol_sequence)))
