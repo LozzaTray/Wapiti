@@ -23,21 +23,42 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
         y_block = y_arr[lower_index : upper_index]
         x_block = x_arr[lower_index : upper_index]
 
-        Y_freq_arr = dft(y_arr, N)
-        X_freq_arr = dft(x_arr, N)
+        Y_freq_arr = dft(y_block, N)
+        X_freq_arr = dft(x_block, N)
 
-        H_sample = np.divide(Y_freq_arr, X_freq_arr)
+        H_sample = np.true_divide(
+            Y_freq_arr, 
+            X_freq_arr,
+            out=np.zeros_like(Y_freq_arr),
+            where=X_freq_arr!=0
+        )
         H.append(H_sample)
 
     return H
 
 
 def plot_H_in_time(H_arr, N):
-    H_arr[0] = 0
-    H_arr[512] = 0
+    #H_arr[0] = 0
+    #H_arr[512] = 0
     h = idft(H_arr, N)
     plt.figure()
+    plt.title("Time Response")
     magnitude = abs(h)
-    phase = np.angle(h)
     plt.plot(magnitude)
     plt.show()
+
+
+def plot_H_freq_domain(H_arr):
+    #H_arr[0] = 0
+    #H_arr[512] = 0
+    fig, (ax1, ax2) = plt.subplots(2, sharex=True)
+    fig.suptitle("Frequency plots")
+
+    ax1.plot(abs(H_arr))
+    ax1.set(ylabel="Gain")
+
+    ax2.plot(np.angle(H_arr, deg=True))
+    ax2.set(ylabel="Phase (degrees)", xlabel="Frequency bin")
+
+    plt.show()
+

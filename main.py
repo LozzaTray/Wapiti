@@ -4,6 +4,7 @@ from src.open_recording import run as open_recording
 from src.play_chirp import run as gen_chirp
 from src.concatenate import run as concatenate
 from src.correlate import run as correlate
+from src.channel_script import run as estimate_channel
 from src.decode_csv import run as decode_csv
 
 
@@ -14,6 +15,7 @@ options = {
     "4": "Concatenate Recordings",
     "5": "Correlate Recordings",
     "6": "Decode csv",
+    "7": "Estimate channel",
     "q": "Quit"
 }
 
@@ -46,6 +48,8 @@ def run():
             correlate()
         elif (option == "6"):
             decode_csv()
+        elif (option == "7"):
+            estimate_channel()
 
     print("Quitting")
 

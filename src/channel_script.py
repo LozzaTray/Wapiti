@@ -7,8 +7,9 @@ from src.coding.decode import decode_symbol_sequence
 from src.coding.utils import text_to_bin
 from src.plotting.plot_recording import plot_recording
 from src.file_io.utils import get_output_file_path
-from src.ofdm.estimate_channel import estimate_channel, plot_H_in_time
+from src.ofdm.estimate_channel import estimate_channel, plot_H_in_time, plot_H_freq_domain
 from config import SAMPLING_FREQ
+import numpy as np
 
 
 
@@ -42,8 +43,12 @@ def run():
     reference_rec = Recording.from_file(reference_file)
 
     received_data = received_rec.extract_data_sequence(reference_rec, D)
-    H = estimate_channel(received_data, sent_data, N=1024, K=1000)
-    plot_H_in_time(H[3], N=1024)
+    H_arr = estimate_channel(received_data, sent_data, N=1024, K=1000)
+    H = np.average(H_arr, axis=0)
+    #H[0] = 0
+    #H[512] = 0
+    plot_H_in_time(H, N=1024)
+    plot_H_freq_domain(H)
 
 
 
