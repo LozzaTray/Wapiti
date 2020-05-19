@@ -32,8 +32,12 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
             out=np.zeros_like(Y_freq_arr),
             where=X_freq_arr!=0
         )
+        H_sample[0] = 0
+        H_sample[int(N/2)] = 0
         H.append(H_sample)
 
+    # take average
+    H = np.average(H, axis=0)
     return H
 
 
@@ -57,7 +61,8 @@ def plot_H_freq_domain(H_arr):
     ax1.plot(abs(H_arr))
     ax1.set(ylabel="Gain")
 
-    ax2.plot(np.angle(H_arr, deg=True))
+    phase = np.unwrap(np.angle(H_arr, deg=True))
+    ax2.plot(phase)
     ax2.set(ylabel="Phase (degrees)", xlabel="Frequency bin")
 
     plt.show()

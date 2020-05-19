@@ -33,20 +33,27 @@ def run():
     sent_data = scaling * modulated_data
     D = len(sent_data)
 
+    #sent = Recording.from_list(sent_data, SAMPLING_FREQ)
+    #plot_recording(sent)
+
     received_file = input("Recorded transmission (.wav): ")
     received_file = get_output_file_path(received_file + ".wav")
 
     received_rec = Recording.from_file(received_file)
+
+    plot_recording(received_rec)
 
     reference_file = input("Reference signal (.wav): ")
     reference_file = get_output_file_path(reference_file + ".wav")
     reference_rec = Recording.from_file(reference_file)
 
     received_data = received_rec.extract_data_sequence(reference_rec, D)
-    H_arr = estimate_channel(received_data, sent_data, N=1024, K=1000)
-    H = np.average(H_arr, axis=0)
-    #H[0] = 0
-    #H[512] = 0
+
+    data_rec = Recording.from_list(received_data, SAMPLING_FREQ)
+    plot_recording(data_rec)
+
+    H = estimate_channel(received_data, sent_data, N=1024, K=1000)
+
     plot_H_in_time(H, N=1024)
     plot_H_freq_domain(H)
 
