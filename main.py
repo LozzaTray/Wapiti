@@ -4,8 +4,9 @@ from src.open_recording import run as open_recording
 from src.play_chirp import run as gen_chirp
 from src.concatenate import run as concatenate
 from src.correlate import run as correlate
-from src.channel_script import run as estimate_channel
 from src.decode_csv import run as decode_csv
+from src.channel_script import run as estimate_channel
+from src.simulate_channel import run as simulate_channel
 
 
 options = {
@@ -16,6 +17,7 @@ options = {
     "5": "Correlate Recordings",
     "6": "Decode csv",
     "7": "Estimate channel",
+    "8": "Pass recording through virtual channel",
     "q": "Quit"
 }
 
@@ -24,11 +26,12 @@ def get_option_with_prompt():
     for (key, val) in options.items():
         print(key + ") " + val)
 
-    option = input("Enter your choice: ")
-    if option in options.keys():
-        return option
-    else:
-        print("Invalid Input. Please try again\n")
+    while (True):
+        option = input("Enter your choice: ")
+        if option in options.keys():
+            return option
+        else:
+            print("Invalid Input. Please try again\n")
 
 
 def run():
@@ -50,6 +53,8 @@ def run():
             decode_csv()
         elif (option == "7"):
             estimate_channel()
+        elif (option == "8"):
+            simulate_channel()
 
     print("Quitting")
 

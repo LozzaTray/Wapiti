@@ -1,7 +1,7 @@
 """module for recording and playing wav objects"""
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
-from scipy.signal import correlate as scipy_correlate
+import scipy
 import numpy as np
 from config import SAMPLING_FREQ
 
@@ -117,7 +117,7 @@ class Recording:
         signal = self.get_frames_as_int16()
         reference = reference_recording.get_frames_as_int16()
         # astype(int64) needed to prevent overflow
-        correlation = scipy_correlate(signal.astype(np.int64), reference, mode="full")
+        correlation = scipy.signal.correlate(signal.astype(np.int64), reference, mode="full")
         return correlation
 
     def extract_data_sequence(self, reference_recording, D):
@@ -134,6 +134,11 @@ class Recording:
 
         return data_arr[data_start : data_end]
 
+    def pass_through_channel(self, channel_impulse_response):
+        """simulates passing through a virtual channel and returns a new recording"""
+        signal = self.get_frames_as_int16()
+        convolved_signal = scipy.signal.convolve(signal, channel_impulse_response)
+        return Recording.from_list(convolved_signal, self.rate)
 
     def get_frames_as_int16(self):
         return np.fromstring(self.frames, np.int16)
