@@ -32,8 +32,6 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
             out=np.zeros_like(Y_freq_arr),
             where=X_freq_arr!=0
         )
-        H_sample[0] = 0
-        H_sample[int(N/2)] = 0
         H.append(H_sample)
 
     # take average
@@ -42,8 +40,6 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
 
 
 def plot_H_in_time(H_arr, N):
-    #H_arr[0] = 0
-    #H_arr[512] = 0
     h = idft(H_arr, N)
     plt.figure()
     plt.title("Time Response")
@@ -53,8 +49,6 @@ def plot_H_in_time(H_arr, N):
 
 
 def plot_H_freq_domain(H_arr):
-    #H_arr[0] = 0
-    #H_arr[512] = 0
     fig, (ax1, ax2) = plt.subplots(2, sharex=True)
     fig.suptitle("Frequency plots")
 
