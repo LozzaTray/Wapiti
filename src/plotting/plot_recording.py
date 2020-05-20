@@ -58,5 +58,3 @@ def plot_correlation(signal_recording: Recording, reference_recording: Recording
     ax2.set(title="Correlation", ylabel="Correlation (int64)", xlabel="Time (s)")
 
     plt.show()
-
-    plot_recording(reference_recording, "Reference Signal")
