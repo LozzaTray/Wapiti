@@ -54,7 +54,7 @@ def q2():
     plot_schmidl(signal_rec, N=N)
 
     print("Extracting sequence...")
-    data_sequence = signal_rec.extract_data_sequence_schmidl(N*1000)
+    data_sequence = signal_rec.extract_data_sequence_schmidl(N=N, D=N*1000)
     data_sequence = data_sequence[ N+K : ] # discard first symbol used for synch
 
     print("Performing Jossy decoding")

@@ -151,12 +151,12 @@ class Recording:
 
         return data_arr[data_start: data_end]
 
-    def extract_data_sequence_schmidl(self, D):
+    def extract_data_sequence_schmidl(self, N, D):
         """
                 extracts the data_sequence from Schmidl and Cox synchronised data
                 D - length of data block following Schmidl and Cox 'block'
         """
-        correlation_arr = self.schmidl_correlate(self)
+        correlation_arr = self.schmidl_correlate(N)
         index_of_max = np.argmax(correlation_arr) # this isn't the complete code for getting the index of max
         data_arr = self.get_frames_as_int16()
 
