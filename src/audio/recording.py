@@ -127,12 +127,12 @@ class Recording:
         #computing corr_arr[0]
         total = 0
         for i in range(N//2 -1):
-            total += np.int64(signal[i]) * signal[i+1]
+            total += np.int64(signal[i]) * signal[i+N//2]
         corr_arr[0] = total
         #now compute the rest!
         for i in range(self.rate * 3 -1):
-            total -= np.int64(signal[i]) * signal[i+1]
-            total += np.int64(signal[i+N//2]) * signal[i + 1 + N//2]
+            total -= np.int64(signal[i]) * signal[i+N//2]
+            total += np.int64(signal[i+N//2]) * signal[i + N]
             corr_arr[i+1] = total
 
         """for i in range(self.rate * 3):
