@@ -2,7 +2,7 @@
 from src.audio.recording import Recording
 from src.file_io.utils import get_data_file_path, get_output_file_path
 from src.audio.chirp import generate_chirp_array_as_int16
-from src.plotting.plot_recording import plot_correlation, plot_schmidl
+from src.plotting.plot_recording import plot_correlation#, plot_schmidl
 from src.file_io.jossy_format import perform_jossy
 
 
@@ -45,7 +45,8 @@ def q2():
     signal_rec = Recording.from_file(signal_file)
 
     print("Testing schmidl...")
-    plot_schmidl(signal_rec, N=N)
+    schmidl = signal_rec.schmidl_correlate(N=N)
+    #plot_schmidl(signal_rec, N=N)
 
     print("Extracting sequence...")
     #data_sequence = signal_rec.extract_data_sequence_schmidl(N*1000)
