@@ -120,6 +120,19 @@ class Recording:
         correlation = scipy_signal.correlate(signal.astype(np.int64), reference, mode="full")
         return correlation
 
+    def schmidl_correlate(self, N):
+        """Performs correlation of self using Schmidl and Cox"""
+        signal = self.get_frames_as_int16()
+        corr_arr = []
+        for i in range(SAMPLING_FREQ * 3)
+            window_1 = signal[i:i+2047]
+            window_2 = signal[i+2048:i+4095]
+            sum = 0.0
+            for j in range(2047)
+                sum += window_1[j] * window_2[j]
+            corr_arr[i] = sum
+        return corr_arr
+
     def extract_data_sequence(self, reference_recording, D):
         """
         extracts the data_sequence

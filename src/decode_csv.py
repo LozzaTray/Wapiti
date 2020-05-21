@@ -51,7 +51,6 @@ def parse_byte_sequence(byte_sequence):
             break
         else:
             file_length = file_length + chr(byte)
-
     file_length = int(file_length)
 
     file_start_index = second_zero_index + 1
