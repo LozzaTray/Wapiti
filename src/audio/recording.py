@@ -123,14 +123,17 @@ class Recording:
     def schmidl_correlate(self, N):
         """Performs correlation of self using Schmidl and Cox"""
         signal = self.get_frames_as_int16()
-        corr_arr = []
-        for i in range(SAMPLING_FREQ * 3):
-            window_1 = signal[i:i+N/2 - 1]
-            window_2 = signal[i + N/2:i+N-1]
+        corr_arr = [0] * self.rate * 3
+        for i in range(self.rate * 3):
+            window_1 = signal[i:i+N//2 - 1]
+            window_2 = signal[i + N//2:i+N-1]
             total = 0
-            for j in range(N/2 - 1):
-                total += window_1[j] * window_2[j]
+            for j in range(N//2 - 1):
+                total += np.int64(window_1[j]) * window_2[j]
             corr_arr[i] = np.int64(total)
+            if i == self.rate: print("1/3 done")
+            if i == 2 * self.rate: print("2/3 done")
+        print("Schmidl and Cox correlation complete!")
         return corr_arr
 
     def extract_data_sequence(self, reference_recording, D):
