@@ -2,14 +2,14 @@
 from src.audio.recording import Recording
 from src.file_io.utils import get_data_file_path, get_output_file_path
 from src.audio.chirp import generate_chirp_array_as_int16
-from src.plotting.plot_recording import plot_correlation#, plot_schmidl
+from src.plotting.plot_recording import plot_correlation, plot_schmidl
 from src.file_io.jossy_format import perform_jossy
 from src.file_io.parser import read_csv_as_array
 from src.ofdm.estimate_channel import estimate_channel, plot_H_in_time
 from src.ofdm.modulate import modulate_sequence
 from src.ofdm.utils import idft
 import numpy as np
-
+import numpy as np
 
 def q1():
     """Question 1"""
@@ -50,8 +50,8 @@ def q2():
     signal_rec = Recording.from_file(signal_file)
 
     print("Testing schmidl...")
-    schmidl = signal_rec.schmidl_correlate(N=N)
-    #plot_schmidl(signal_rec, N=N)
+    #schmidl = signal_rec.schmidl_correlate(N=N)
+    plot_schmidl(signal_rec, N=N)
 
     print("Extracting sequence...")
     #data_sequence = signal_rec.extract_data_sequence_schmidl(N*1000)
@@ -113,5 +113,5 @@ def q3():
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     #q1()
-    #q2()
-    q3()
+    q2()
+    #q3()

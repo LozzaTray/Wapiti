@@ -7,7 +7,6 @@ from config import SAMPLING_FREQ
 
 
 class Recording:
-
     # Default props
     DEFAULT_RATE = SAMPLING_FREQ
     DEFAULT_CHUNK = 1024
@@ -21,7 +20,8 @@ class Recording:
         self.audio_format = audio_format
 
     @classmethod
-    def from_mic(cls, duration, num_channels=DEFAULT_NUM_CHANNELS, rate=DEFAULT_RATE, chunk=DEFAULT_CHUNK, audio_format=DEFAULT_FORMAT):
+    def from_mic(cls, duration, num_channels=DEFAULT_NUM_CHANNELS, rate=DEFAULT_RATE, chunk=DEFAULT_CHUNK,
+                 audio_format=DEFAULT_FORMAT):
         """Initialise recording from mic"""
 
         p = pyaudio.PyAudio()  # create pyaudio object
@@ -124,16 +124,30 @@ class Recording:
         """Performs correlation of self using Schmidl and Cox"""
         signal = self.get_frames_as_int16()
         corr_arr = [0] * self.rate * 3
-        for i in range(self.rate * 3):
-            window_1 = signal[i:i+N//2 - 1]
-            window_2 = signal[i + N//2:i+N-1]
+        #computing corr_arr[0]
+        total = 0
+        for i in range(N//2 -1):
+            total += np.int64(signal[i]) * signal[i+1]
+        corr_arr[0] = total
+        #now compute the rest!
+        for i in range(self.rate * 3 -1):
+            total -= np.int64(signal[i]) * signal[i+1]
+            total += np.int64(signal[i+N//2]) * signal[i + 1 + N//2]
+            corr_arr[i+1] = total
+
+        """for i in range(self.rate * 3):
+            window_1 = signal[i:i + N // 2 - 1]
+            window_2 = signal[i + N // 2:i + N - 1]
+            #product = np.einsum('ij,ij', window_1, window_2)
             total = 0
-            for j in range(N//2 - 1):
+            for j in range(N // 2 - 1):
                 total += np.int64(window_1[j]) * window_2[j]
+            #assert total == product
+
             corr_arr[i] = np.int64(total)
             if i == self.rate: print("1/3 done")
             if i == 2 * self.rate: print("2/3 done")
-        print("Schmidl and Cox correlation complete!")
+        print("Schmidl and Cox correlation complete!")"""
         return corr_arr
 
     def extract_data_sequence(self, reference_recording, D):
@@ -144,11 +158,11 @@ class Recording:
         correlation_arr = self.correlate(reference_recording)
         index_of_max = np.argmax(correlation_arr)
         data_arr = self.get_frames_as_int16()
-        
+
         data_start = index_of_max + 1
         data_end = data_start + D
 
-        return data_arr[data_start : data_end]
+        return data_arr[data_start: data_end]
 
     def pass_through_channel(self, channel_impulse_response):
         """simulates passing through a virtual channel and returns a new recording"""
@@ -158,12 +172,14 @@ class Recording:
 
     def get_frames_as_int16(self):
         return np.fromstring(self.frames, np.int16)
-    
+
     def append_recording(self, rec2):
         """Append two 'Recording' instances together"""
-        
-        assert (self.channels == rec2.channels), "Number of channels does not match ({} and {})".format(self.channels, rec2.channels)
+
+        assert (self.channels == rec2.channels), "Number of channels does not match ({} and {})".format(self.channels,
+                                                                                                        rec2.channels)
         assert (self.rate == rec2.rate), "Rates do not match ({} and {})".format(self.rate, rec2.rate)
-        assert (self.audio_format == rec2.audio_format), "Audio formats do not match ({} and {})".format(self.audio_format, rec2.audio_format)
-        
+        assert (self.audio_format == rec2.audio_format), "Audio formats do not match ({} and {})".format(
+            self.audio_format, rec2.audio_format)
+
         self.frames += rec2.frames
