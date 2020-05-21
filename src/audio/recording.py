@@ -157,13 +157,13 @@ class Recording:
                 D - length of data block following Schmidl and Cox 'block'
         """
         correlation_arr = self.schmidl_correlate(N)
-        index_of_max = np.argmax(correlation_arr) # this isn't the complete code for getting the index of max
+        index_of_max = np.argmax(np.abs(correlation_arr)) # this isn't the complete code for getting the index of max
         data_arr = self.get_frames_as_int16()
 
-        data_start = index_of_max + 1
+        data_start = index_of_max + N - 1# can give own shift
         data_end = data_start + D
 
-        return data_arr[data_start: data_end]
+        return data_arr[data_start : data_end]
 
     def pass_through_channel(self, channel_impulse_response):
         """simulates passing through a virtual channel and returns a new recording"""

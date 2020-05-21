@@ -49,15 +49,10 @@ def q2():
     signal_file = get_data_file_path(signal_file + ".wav")
     signal_rec = Recording.from_file(signal_file)
 
-    print("Testing schmidl...")
-    #schmidl = signal_rec.schmidl_correlate(N=N)
-    plot_schmidl(signal_rec, N=N)
-
-    print("Extracting sequence...")
+    print("Extracting sequence by detecting Schmidl...")
     data_sequence = signal_rec.extract_data_sequence_schmidl(N=N, D=N*1000)
-    data_sequence = data_sequence[ N+K : ] # discard first symbol used for synch
 
-    print("Performing Jossy decoding")
+    print("Performing Jossy decoding...")
     perform_jossy(data_sequence, [1], N=N, K=K)
 
 

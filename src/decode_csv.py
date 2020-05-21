@@ -68,7 +68,6 @@ def decode_symbol_sequence_jossy_format(symbol_sequence):
 
     symbols_per_byte = 4
     decoded_sequence = np.array(list(map(decode_symbol, symbol_sequence)))
-    #bit_sequence = bit_sequence.flatten()
     
     num_symbols_long = len(decoded_sequence)
     num_bytes = math.floor(num_symbols_long / symbols_per_byte)
