@@ -58,3 +58,28 @@ def plot_correlation(signal_recording: Recording, reference_recording: Recording
     ax2.set(title="Correlation", ylabel="Correlation (int64)", xlabel="Time (s)")
 
     plt.show()
+    
+    
+def plot_schmidl(signal_recording: Recording, N) -> None:
+    """Performs correlation of signal with reference and plots"""
+    
+    if isinstance(signal_recording, Recording) == False:
+        raise TypeError("Signal is not instance of {}".format(Recording))
+    
+    signal = signal_recording.get_frames_as_int16()
+    signal_time = _gen_time_array(len(signal), signal_recording.rate)
+    
+    schmidled = signal_recording.schmidl_correlate(N)
+    schmidled_time = _gen_time_array(len(schmidled), signal_recording.rate)
+
+    fig, (ax1, ax2) = plt.subplots(2, sharex=True)
+    fig.suptitle(_gen_title_string(signal_recording, "Signal with Schmidl correlation"))
+
+    ax1.plot(signal_time, signal)
+    ax1.set(title="Signal", ylabel="Sample (int16)")
+    
+    ax2.plot(schmidled_time, schmidled)
+    ax2.set(title="Schmidl correlation", ylabel="Schmidl correlation (int64)", xlabel="Time (s)")
+
+    plt.show()
+    
