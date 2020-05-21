@@ -1,23 +1,22 @@
 """code to generate artificial recording for transmitting known data"""
 from src.audio.recording import Recording
-from src.ofdm.modulate import modulate_sequence
-from src.ofdm.demodulate import demodulate_sequence
-from src.coding.encode import encode_bit_string
-from src.coding.decode import decode_symbol_sequence
-from src.coding.utils import text_to_bin
 from src.plotting.plot_recording import plot_recording
 from src.file_io.utils import get_output_file_path
-from src.ofdm.estimate_channel import estimate_channel, plot_H_in_time, plot_H_freq_domain
-from config import SAMPLING_FREQ
-import numpy as np
-
+from src.ofdm.estimate_channel import estimate_channel
+from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
 
 
 def run():
     """main loop"""
+    #constants
+    N = 1024
+    K = 1000
+
+    # get data pre-transmission
     sent_file = input("Data that was sent (.wav): ")
     sent_file = get_output_file_path(sent_file + ".wav")
     data_rec = Recording.from_file(sent_file)
+    #sampling_freq = data_rec.rate
     
     data_seq = data_rec.get_frames_as_int16()
     D = len(data_seq)
@@ -34,10 +33,10 @@ def run():
 
     received_data = received_rec.extract_data_sequence(reference_rec, D)
 
-    H = estimate_channel(received_data, data_seq, N=1024, K=1000)
+    h = estimate_channel(received_data, data_seq, N=1024, K=1000)
 
-    plot_H_in_time(H, N=1024)
-    plot_H_freq_domain(H)
+    plot_h_in_time(h)
+    plot_h_freq_domain(h, N=N)
 
 
 

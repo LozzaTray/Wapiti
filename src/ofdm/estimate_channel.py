@@ -1,10 +1,15 @@
 from src.ofdm.utils import dft, idft
-import matplotlib.pyplot as plt
 import numpy as np
 
 
 def estimate_channel(y_arr, x_arr, N: int, K: int):
-    """Estimates the channel"""
+    """
+    Estimates the channel
+    y_arr: array of received ofdm seq (post-channel)
+    x_arr: array of sent ofdm seq (pre-channel)
+    N: dft block size
+    K: cyclic prefix size
+    """
     data_length = len(y_arr)
 
     if (data_length != len(x_arr)):
@@ -36,28 +41,7 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
 
     # take average
     H = np.average(H, axis=0)
-    return H
-
-
-def plot_H_in_time(H_arr, N):
-    h = idft(H_arr, N)
-    plt.figure()
-    plt.title("Time Response")
-    magnitude = abs(h)
-    plt.plot(magnitude)
-    plt.show()
-
-
-def plot_H_freq_domain(H_arr):
-    fig, (ax1, ax2) = plt.subplots(2, sharex=True)
-    fig.suptitle("Frequency plots")
-
-    ax1.plot(abs(H_arr))
-    ax1.set(ylabel="Gain")
-
-    phase = np.unwrap(np.angle(H_arr, deg=True))
-    ax2.plot(phase)
-    ax2.set(ylabel="Phase (degrees)", xlabel="Frequency bin")
-
-    plt.show()
-
+    h = idft(H, N)
+    h = np.real_if_close(h)
+    h = h[ : K + 1] # concatenate to length K
+    return h

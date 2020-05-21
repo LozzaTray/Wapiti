@@ -10,7 +10,7 @@ def run():
     signal_file = get_output_file_path(signal_file + ".wav")
     signal = Recording.from_file(signal_file)
 
-    channel = [0.1 , 0.05 , 0.01]
+    channel = [1 , 0.4 , 0, 0.5, 0.2, 0]
 
     print("Passing through channel...")
     received_signal = signal.pass_through_channel(channel)

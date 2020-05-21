@@ -5,7 +5,7 @@ from src.play_chirp import run as gen_chirp
 from src.concatenate import run as concatenate
 from src.correlate import run as correlate
 from src.decode_csv import run as decode_csv
-from src.channel_script import run as estimate_channel
+from src.channel_estimator import run as estimate_channel
 from src.simulate_channel import run as simulate_channel
 
 
