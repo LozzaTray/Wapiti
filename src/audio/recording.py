@@ -151,6 +151,20 @@ class Recording:
 
         return data_arr[data_start: data_end]
 
+    def extract_data_sequence_schmidl(self, D):
+        """
+                extracts the data_sequence from Schmidl and Cox synchronised data
+                D - length of data block following Schmidl and Cox 'block'
+        """
+        correlation_arr = self.schmidl_correlate(self)
+        index_of_max = np.argmax(correlation_arr) # this isn't the complete code for getting the index of max
+        data_arr = self.get_frames_as_int16()
+
+        data_start = index_of_max + 1
+        data_end = data_start + D
+
+        return data_arr[data_start: data_end]
+
     def pass_through_channel(self, channel_impulse_response):
         """simulates passing through a virtual channel and returns a new recording"""
         signal = self.get_frames_as_int16()
