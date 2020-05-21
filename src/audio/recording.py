@@ -135,19 +135,6 @@ class Recording:
             total += np.int64(signal[i+N//2]) * signal[i + N]
             corr_arr[i+1] = total
 
-        """for i in range(self.rate * 3):
-            window_1 = signal[i:i + N // 2 - 1]
-            window_2 = signal[i + N // 2:i + N - 1]
-            #product = np.einsum('ij,ij', window_1, window_2)
-            total = 0
-            for j in range(N // 2 - 1):
-                total += np.int64(window_1[j]) * window_2[j]
-            #assert total == product
-
-            corr_arr[i] = np.int64(total)
-            if i == self.rate: print("1/3 done")
-            if i == 2 * self.rate: print("2/3 done")
-        print("Schmidl and Cox correlation complete!")"""
         return corr_arr
 
     def extract_data_sequence(self, reference_recording, D):
