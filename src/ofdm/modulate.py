@@ -29,7 +29,7 @@ def modulate_block(block, N, K):
     return x_cyclic
 
 
-def modulate_sequence(data_sequence, N=1024, K=32):
+def modulate_sequence(data_sequence, N, K):
     """
     modulates given data sequence
     block length N
