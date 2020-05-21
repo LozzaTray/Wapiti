@@ -1,6 +1,7 @@
 """module for recording and playing wav objects"""
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
+from src.ofdm.estimate_channel import estimate_channel
 import scipy.signal as scipy_signal
 import numpy as np
 from config import SAMPLING_FREQ
@@ -151,16 +152,25 @@ class Recording:
 
         return data_arr[data_start: data_end]
 
-    def extract_data_sequence_schmidl(self, N, D):
+    def extract_data_sequence_schmidl(self, N, K, D, known_symbol):
         """
                 extracts the data_sequence from Schmidl and Cox synchronised data
                 D - length of data block following Schmidl and Cox 'block'
         """
         correlation_arr = self.schmidl_correlate(N)
-        index_of_max = np.argmax(np.abs(correlation_arr)) # this isn't the complete code for getting the index of max
+        index_of_max_init = np.argmax(np.abs(correlation_arr)) # this isn't the complete code for getting the index of max
         data_arr = self.get_frames_as_int16()
 
-        data_start = index_of_max + N - 1# can give own shift
+        estimate = 1
+        i = -10
+        while estimate != 0:
+            print(estimate_channel(data_arr[i + index_of_max_init + 1:i + index_of_max_init + 1 + 2 * N], known_symbol,
+                                   N=N, K=K))
+            i += 1
+            if i == 10:
+                estimate = 0
+
+        data_start = index_of_max_init + N - 1# can give own shift
         data_end = data_start + D
 
         return data_arr[data_start : data_end]
