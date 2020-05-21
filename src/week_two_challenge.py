@@ -31,10 +31,10 @@ def q1():
 
     print("Extracting sequence...")
     data_sequence = signal_rec.extract_data_sequence(chirp_rec, N*1000)
+    data_sequence = data_sequence[ N+K : ] # discard first symbol used for synch
 
     print("Demodulating OFDM...")
     symbol_sequence = demodulate_sequence(data_sequence, [1], N=N, K=K)
-    symbol_sequence = symbol_sequence[int(N/2 - 1) :]
 
     print("Decoding QPSK...")
     title, file_length, file_bytes = decode_symbol_sequence_jossy_format(symbol_sequence)
@@ -46,8 +46,12 @@ def q1():
     file_bytes.tofile(output_file)
  
 
+def q2():
+    """Well this is a lot harder"""
+    pass
 
 
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     q1()
+    #q2()

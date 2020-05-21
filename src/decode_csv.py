@@ -8,17 +8,18 @@ import math
 import os
 
 
-def bit_array_to_byte(bit_array):
+def bit_array_to_byte(bits_array):
     """
-    Convert an array of 8-bits into a byte
+    Convert an array of bit strings of unkown length into a byte
     """
-
-    if len(bit_array) != 8:
-        raise ValueError("Supplied array was not length 8")
 
     byte = ""
-    for bit in bit_array:
-        byte = byte + str(bit)
+    for bits in bits_array:
+        byte = byte + str(bits)
+
+    if len(byte) != 8:
+        raise ValueError("Supplied array does not comprise 8")
+
     return int(byte, base=2)
 
 
@@ -66,15 +67,16 @@ def decode_symbol_sequence_jossy_format(symbol_sequence):
     returns: title (str), file_length (int), file_bytes (byte[])
     """
 
-    bit_sequence = np.array(list(map(decode_symbol, symbol_sequence)))
-    bit_sequence = bit_sequence.flatten()
+    symbols_per_byte = 4
+    decoded_sequence = np.array(list(map(decode_symbol, symbol_sequence)))
+    #bit_sequence = bit_sequence.flatten()
     
-    num_bits = len(bit_sequence)
-    num_bytes = math.floor(num_bits / 8)
+    num_symbols_long = len(decoded_sequence)
+    num_bytes = math.floor(num_symbols_long / symbols_per_byte)
 
-    bit_sequence = bit_sequence[0: num_bytes * 8]
+    decoded_sequence = decoded_sequence[0: num_bytes * symbols_per_byte]
 
-    byte_sequence = np.reshape(bit_sequence, (num_bytes, 8))
+    byte_sequence = np.reshape(decoded_sequence, (num_bytes, symbols_per_byte))
     byte_sequence = np.array(list(map(bit_array_to_byte, byte_sequence))).astype("uint8")
     
     return parse_byte_sequence(byte_sequence)
