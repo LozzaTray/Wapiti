@@ -70,7 +70,8 @@ def plot_schmidl(signal_recording: Recording, N) -> None:
     signal_time = _gen_time_array(len(signal), signal_recording.rate)
     
     schmidled = signal_recording.schmidl_correlate(N)
-    schmidled_time = _gen_time_array(len(schmidled), signal_recording.rate)
+    #schmidled_time = _gen_time_array(len(schmidled), signal_recording.rate)
+    sig_rate = signal_recording.rate
 
     fig, (ax1, ax2) = plt.subplots(2, sharex=True)
     fig.suptitle(_gen_title_string(signal_recording, "Signal with Schmidl correlation"))
@@ -78,8 +79,10 @@ def plot_schmidl(signal_recording: Recording, N) -> None:
     ax1.plot(signal_time, signal)
     ax1.set(title="Signal", ylabel="Sample (int16)")
     
-    ax2.plot(schmidled_time, schmidled)
+    ax2.plot(schmidled)
     ax2.set(title="Schmidl correlation", ylabel="Schmidl correlation (int64)", xlabel="Time (s)")
-
+    
+    plt.grid('x', markevery=sig_rate)
+    
     plt.show()
     
