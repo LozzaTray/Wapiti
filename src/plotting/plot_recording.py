@@ -82,3 +82,4 @@ def plot_schmidl(signal_recording: Recording, N) -> None:
     ax2.set(title="Schmidl correlation", ylabel="Schmidl correlation (int64)", xlabel="Time (s)")
 
     plt.show()
+    
