@@ -5,7 +5,8 @@ from src.audio.chirp import generate_chirp_array_as_int16
 from src.plotting.plot_recording import plot_correlation, plot_schmidl
 from src.file_io.jossy_format import perform_jossy
 from src.file_io.parser import read_csv_as_array
-from src.ofdm.estimate_channel import estimate_channel, plot_H_in_time
+from src.ofdm.estimate_channel import estimate_channel
+from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
 from src.ofdm.modulate import modulate_sequence
 from src.ofdm.utils import idft
 import numpy as np
@@ -40,7 +41,6 @@ def q1():
 def q2():
     """Well this is a lot harder"""
     #constants
-    RATE = 48000
     N = 4096
     K = 0
 
@@ -91,6 +91,9 @@ def q3():
     chirp_arr = generate_chirp_array_as_int16(T, RATE, F0, F1)
     chirp_rec = Recording.from_list(chirp_arr, RATE)
 
+    #print("Plot Correlation...")
+    #plot_correlation(signal_rec, chirp_rec)
+
     print("Extracting sequence after chirp...")
     data_sequence = signal_rec.extract_data_sequence(chirp_rec, P*1000)
     data_sequence = data_sequence[ P : ] # discard first symbol used for schmidl
@@ -106,9 +109,10 @@ def q3():
     known_modulated = np.tile(known_modulated, NUM_PILOTS)
 
     print("Estimating channel...")
-    H = estimate_channel(known_sequence, known_modulated, N, K)
-    plot_H_in_time(H, N)
-    h = idft(H, N)
+
+    h = estimate_channel(known_sequence, known_modulated, N, K)
+    plot_h_in_time(h)
+    plot_h_freq_domain(h, N=N)
 
     print("Let's be having ya...")
     perform_jossy(ofdm_sequence, h, N=N, K=K)
@@ -118,5 +122,5 @@ def q3():
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     #q1()
-    q2()
-    #q3()
+    #q2()
+    q3()

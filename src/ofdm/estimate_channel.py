@@ -9,6 +9,9 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
     x_arr: array of sent ofdm seq (pre-channel)
     N: dft block size
     K: cyclic prefix size
+
+    Returns:
+    h: arr[num] the time domain response concatenated to K = 1
     """
     data_length = len(y_arr)
 
@@ -22,7 +25,7 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
     num_blocks = int(data_length / (N + K))
 
     for i in range(0, num_blocks):
-        lower_index = i*(N+K) + K
+        lower_index = i*(N+K) + K # hacky soln
         upper_index = lower_index + N
 
         y_block = y_arr[lower_index : upper_index]

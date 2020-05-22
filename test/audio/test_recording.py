@@ -55,3 +55,16 @@ def test_correlation():
     correlation = signal_rec.correlate(reference_rec)
     index_of_max = np.argmax(correlation)
     assert index_of_max == 3
+
+
+def test_pass_through_channel():
+    rate = 1
+    signal = [10, 0, 10]
+    filt = [1, 0.5]
+
+    signal_rec = Recording.from_list(signal, rate)
+
+    sim_signal_rec = signal_rec.pass_through_channel(filt)
+    sim_signal = sim_signal_rec.get_frames_as_int16()
+
+    assert list(sim_signal) == [10, 5, 10, 5]

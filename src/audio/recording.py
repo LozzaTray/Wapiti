@@ -144,13 +144,17 @@ class Recording:
         D - length of data block following first chirp
         """
         correlation_arr = self.correlate(reference_recording)
-        index_of_max = np.argmax(correlation_arr)
+        length = len(correlation_arr)
+
+        # TODO Less hacky
+        first_half = np.abs(correlation_arr[0 : length // 2])
+        index_of_max = np.argmax(first_half)
         data_arr = self.get_frames_as_int16()
 
         data_start = index_of_max + 1
         data_end = data_start + D
 
-        return data_arr[data_start: data_end]
+        return data_arr[data_start : data_end]
 
     def extract_data_sequence_schmidl(self, N, K, D, known_symbol):
         """
