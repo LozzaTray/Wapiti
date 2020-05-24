@@ -31,9 +31,10 @@ def run():
     reference_file = get_output_file_path(reference_file + ".wav")
     reference_rec = Recording.from_file(reference_file)
 
-    received_data = received_rec.extract_data_sequence(reference_rec, D)
+    offset = int(input("Manual sync offset: "))
+    received_data = received_rec.extract_data_sequence(reference_rec, D, offset=offset)
 
-    h = estimate_channel(received_data, data_seq, N=1024, K=1000)
+    h = estimate_channel(received_data, data_seq, N=N, K=K)
 
     plot_h_in_time(h)
     plot_h_freq_domain(h, N=N)

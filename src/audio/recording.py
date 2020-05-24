@@ -5,6 +5,7 @@ from src.ofdm.estimate_channel import estimate_channel
 import scipy.signal as scipy_signal
 import numpy as np
 from config import SAMPLING_FREQ
+from src.plotting.impulse_response import plot_h_freq_domain, plot_h_in_time
 
 
 class Recording:
@@ -138,10 +139,12 @@ class Recording:
 
         return corr_arr
 
-    def extract_data_sequence(self, reference_recording, D):
+    def extract_data_sequence(self, reference_recording, D, offset=0):
         """
         extracts the data_sequence
+        reference_recording - Recording against which to correlate
         D - length of data block following first chirp
+        offset - manual offset to start of data sequence
         """
         correlation_arr = self.correlate(reference_recording)
         length = len(correlation_arr)
@@ -151,30 +154,34 @@ class Recording:
         index_of_max = np.argmax(first_half)
         data_arr = self.get_frames_as_int16()
 
-        data_start = index_of_max + 1
+        data_start = index_of_max + 1 + offset
         data_end = data_start + D
 
         return data_arr[data_start : data_end]
 
-    def extract_data_sequence_schmidl(self, N, K, D, known_symbol):
+    def extract_data_sequence_schmidl(self, N, K, D, known_block, width = 5):
         """
-                extracts the data_sequence from Schmidl and Cox synchronised data
-                D - length of data block following Schmidl and Cox 'block'
+        extracts the data_sequence from Schmidl and Cox synchronised data
+        N - Fourier block size
+        K - Cyclic prefix length
+        D - length of data block following Schmidl and Cox 'block'
         """
         correlation_arr = self.schmidl_correlate(N)
-        index_of_max_init = np.argmax(np.abs(correlation_arr)) # this isn't the complete code for getting the index of max
+        index_of_max = np.argmax(np.abs(correlation_arr))
         data_arr = self.get_frames_as_int16()
 
-        estimate = 1
-        i = -10
-        while estimate != 0:
-            print(estimate_channel(data_arr[i + index_of_max_init + 1:i + index_of_max_init + 1 + 2 * N], known_symbol,
-                                   N=N, K=K))
-            i += 1
-            if i == 10:
-                estimate = 0
+        for i in range( - width, width + 1):
+            lower_index = index_of_max + i - K
+            upper_index = lower_index + N + K
 
-        data_start = index_of_max_init + N - 1# can give own shift
+            schmidl_block = data_arr[lower_index : upper_index]
+            h_estimate = estimate_channel(schmidl_block, known_block, N=N, K=K)
+
+            print("offset: {}, corln: {}".format(i, correlation_arr[index_of_max + i]))
+            plot_h_freq_domain(h_estimate, N=N)
+
+
+        data_start = index_of_max + N - 1# can give own shift
         data_end = data_start + D
 
         return data_arr[data_start : data_end]

@@ -7,7 +7,7 @@ from src.file_io.jossy_format import perform_jossy
 from src.file_io.parser import read_csv_as_array
 from src.ofdm.estimate_channel import estimate_channel
 from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
-from src.ofdm.modulate import modulate_sequence
+from src.ofdm.modulate import modulate_schmidl_odd, modulate_sequence
 from src.ofdm.utils import idft
 import numpy as np
 import numpy as np
@@ -52,15 +52,13 @@ def q2():
     print("Loading known sequence...")
     data_file = get_data_file_path("a7r56tu_knownseq.csv")
     pre_modulation = read_csv_as_array(data_file)
-    known_modulated = modulate_sequence(pre_modulation, N=N, K=K)
 
-    print("Testing schmidl...")
-    #schmidl = signal_rec.schmidl_correlate(N=N)
-    #plot_schmidl(signal_rec, N=N)
+    print("Performing schmidl modulation...")
+    pre_modulation = pre_modulation[0 : N // 4]
+    known_schmidl = modulate_schmidl_odd(pre_modulation, N=N, K=K)
 
     print("Extracting sequence...")
-    data_sequence = signal_rec.extract_data_sequence_schmidl(N=N, K=K, D=N*1000, known_symbol=known_modulated)
-    data_sequence = data_sequence[ N+K : ] # discard first symbol used for synch
+    data_sequence = signal_rec.extract_data_sequence_schmidl(N=N, K=K, D=N*1000, known_block=known_schmidl)
 
     print("Performing Jossy decoding")
     perform_jossy(data_sequence, [1], N=N, K=K)
@@ -122,5 +120,5 @@ def q3():
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     #q1()
-    #q2()
-    q3()
+    q2()
+    #q3()

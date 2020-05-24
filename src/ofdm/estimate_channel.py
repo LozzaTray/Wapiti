@@ -45,6 +45,6 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
     # take average
     H = np.average(H, axis=0)
     h = idft(H, N)
-    h = np.real_if_close(h)
+    h = np.real_if_close(h) # must be real channel in reality
     h = h[ : K + 1] # concatenate to length K
     return h

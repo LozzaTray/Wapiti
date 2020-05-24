@@ -58,3 +58,17 @@ def modulate_sequence(data_sequence, N, K):
         modulated_sequence = np.concatenate((modulated_sequence, modulated_block))
 
     return np.real_if_close(modulated_sequence)
+
+
+def modulate_schmidl_odd(data_sequence, N, K):
+    """
+    Performs an odd schmidl modulation on a data sequence
+        data_sequence: num[]
+        N: int
+        K: int
+    """
+    d = len(data_sequence)
+    out = np.zeros( 2 * d - 1)
+    out[0 : len(out) : 2] = data_sequence # [start : stop : step] >> zeros at every odd index
+    modulated_sequence = modulate_sequence(out, N, K)
+    return modulated_sequence

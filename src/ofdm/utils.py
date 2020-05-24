@@ -37,6 +37,10 @@ def insert_cyclic_prefix(x, K):
     inserts a cyclic prefix of length K into the data sequence x
     makes linear convolution match cyclic convolution
     """
-
-    x_cyclic = np.concatenate((x[-K:], x))
-    return x_cyclic
+    if (K < 0):
+        raise ValueError("Cyclic prefix-length must be non-negative")
+    elif (K == 0) :
+        return x
+    else:
+        x_cyclic = np.concatenate((x[-K:], x))
+        return x_cyclic
