@@ -12,6 +12,21 @@ from src.ofdm.utils import idft
 import numpy as np
 import numpy as np
 
+
+def encode_two_bits(x):
+    """returns QPSK symbol for value x"""
+    if x == 0:
+        return 1+1j
+    elif x == 1:
+        return -1+1j
+    elif x == 3:
+        return -1-1j
+    elif x == 2:
+        return 1-1j
+    else:
+        raise ValueError(r"Argument not in {0, 1, 2, 3}")
+
+
 def q1():
     """Question 1"""
     #constants
@@ -89,23 +104,25 @@ def q3():
     chirp_arr = generate_chirp_array_as_int16(T, RATE, F0, F1)
     chirp_rec = Recording.from_list(chirp_arr, RATE)
 
-    #print("Plot Correlation...")
-    #plot_correlation(signal_rec, chirp_rec)
-
     print("Extracting sequence after chirp...")
-    offset = 20
-    data_sequence = signal_rec.extract_data_sequence(chirp_rec, P*1000)
-    data_sequence = data_sequence[ P - offset : ] # discard first symbol used for schmidl
+    offset = -10
+    data_sequence = signal_rec.extract_data_sequence(chirp_rec, P*1000, offset=offset)
+    data_sequence = data_sequence[ P : ] # discard first symbol used for schmidl
 
     print("Dividing into relevant chunks...")
     known_sequence = data_sequence[ : NUM_PILOTS * P]
+    known_sequence = np.reshape(known_sequence, (NUM_PILOTS, P))
+    known_sequence = np.mean(known_sequence, axis=0)
     ofdm_sequence = data_sequence[NUM_PILOTS * P :] # rest of data
 
     print("Loading known sequence...")
     data_file = get_data_file_path("a7r56tu_knownseq.csv")
-    pre_modulation = read_csv_as_array(data_file)
-    known_modulated = modulate_sequence(pre_modulation, N=N, K=K)
-    known_modulated = np.tile(known_modulated, NUM_PILOTS)
+    source_bits = read_csv_as_array(data_file)
+    symbol_sequence = list(map(encode_two_bits, source_bits))
+
+    print("Performing ofdm modulation...")
+    known_modulated = modulate_sequence(symbol_sequence, N=N, K=K)
+    #known_modulated = np.tile(known_modulated, NUM_PILOTS)
 
     print("Estimating channel...")
     h = estimate_channel(known_sequence, known_modulated, N, K)

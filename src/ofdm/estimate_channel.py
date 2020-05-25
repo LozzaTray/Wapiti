@@ -49,9 +49,9 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
             where=X_freq_arr!=0
         )
 
-        # zero these bins
-        H_sample[0] = 0
-        H_sample[N//2] = 0
+        # set equal to neighbours
+        H_sample[0] = H_sample[1]
+        H_sample[N//2] = H_sample[N//2 + 1]
 
         H.append(H_sample)
 
@@ -59,5 +59,4 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
     H = np.average(H, axis=0)
     h = idft(H, N)
     #h = np.real_if_close(h) # must be real channel in reality
-    #h = h[ : K + 1] # concatenate to length K
     return h
