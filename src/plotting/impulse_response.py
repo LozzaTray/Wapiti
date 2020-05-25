@@ -6,9 +6,10 @@ import numpy as np
 
 def plot_h_in_time(h_arr):
     plt.figure()
+    h_real = np.real_if_close(h_arr)
     plt.title("Time Response of Filter")
-    plt.plot(h_arr)
-    plt.ylabel("H coefficient")
+    plt.plot(h_real)
+    plt.ylabel("h coefficient")
     plt.xlabel("Sample index")
     plt.show()
 

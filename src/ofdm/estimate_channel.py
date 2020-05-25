@@ -2,6 +2,14 @@ from src.ofdm.utils import dft, idft
 import numpy as np
 
 
+def calc_abs_angle_error(h, N):
+    """Given a channel response, calculate the phase"""
+    H_arr = dft(h, N)
+    phase = np.unwrap(np.angle(H_arr))
+    mean_squared_phase = np.mean(phase ** 2)
+    return mean_squared_phase
+    
+
 def estimate_channel(y_arr, x_arr, N: int, K: int):
     """
     Estimates the channel
@@ -40,11 +48,16 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
             out=np.zeros_like(Y_freq_arr),
             where=X_freq_arr!=0
         )
+
+        # zero these bins
+        H_sample[0] = 0
+        H_sample[N//2] = 0
+
         H.append(H_sample)
 
     # take average
     H = np.average(H, axis=0)
     h = idft(H, N)
-    h = np.real_if_close(h) # must be real channel in reality
-    h = h[ : K + 1] # concatenate to length K
+    #h = np.real_if_close(h) # must be real channel in reality
+    #h = h[ : K + 1] # concatenate to length K
     return h

@@ -93,8 +93,9 @@ def q3():
     #plot_correlation(signal_rec, chirp_rec)
 
     print("Extracting sequence after chirp...")
+    offset = 20
     data_sequence = signal_rec.extract_data_sequence(chirp_rec, P*1000)
-    data_sequence = data_sequence[ P : ] # discard first symbol used for schmidl
+    data_sequence = data_sequence[ P - offset : ] # discard first symbol used for schmidl
 
     print("Dividing into relevant chunks...")
     known_sequence = data_sequence[ : NUM_PILOTS * P]
@@ -107,7 +108,6 @@ def q3():
     known_modulated = np.tile(known_modulated, NUM_PILOTS)
 
     print("Estimating channel...")
-
     h = estimate_channel(known_sequence, known_modulated, N, K)
     plot_h_in_time(h)
     plot_h_freq_domain(h, N=N)
@@ -120,5 +120,5 @@ def q3():
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     #q1()
-    q2()
-    #q3()
+    #q2()
+    q3()

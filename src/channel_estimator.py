@@ -31,8 +31,8 @@ def run():
     reference_file = get_output_file_path(reference_file + ".wav")
     reference_rec = Recording.from_file(reference_file)
 
-    offset = int(input("Manual sync offset: "))
-    received_data = received_rec.extract_data_sequence(reference_rec, D, offset=offset)
+    offset = int(input("Manual sync offset (-ve): "))
+    received_data = received_rec.extract_data_sequence(reference_rec, D, offset= - offset)
 
     h = estimate_channel(received_data, data_seq, N=N, K=K)
 

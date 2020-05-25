@@ -1,7 +1,7 @@
 """module for recording and playing wav objects"""
 import pyaudio
 from src.file_io.wav import read_wav, write_wav
-from src.ofdm.estimate_channel import estimate_channel
+from src.ofdm.estimate_channel import estimate_channel, calc_abs_angle_error
 import scipy.signal as scipy_signal
 import numpy as np
 from config import SAMPLING_FREQ
@@ -177,8 +177,9 @@ class Recording:
             schmidl_block = data_arr[lower_index : upper_index]
             h_estimate = estimate_channel(schmidl_block, known_block, N=N, K=K)
 
-            print("offset: {}, corln: {}".format(i, correlation_arr[index_of_max + i]))
-            plot_h_freq_domain(h_estimate, N=N)
+            mse = calc_abs_angle_error(h_estimate, N=N)
+            print("offset: {}, mse: {}".format(i, mse))
+            #plot_h_freq_domain(h_estimate, N=N)
 
 
         data_start = index_of_max + N - 1# can give own shift
