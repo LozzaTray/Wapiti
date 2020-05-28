@@ -11,7 +11,8 @@ def text_to_bin(text):
 
 def xor(bin_data, N):
     binr = open(get_data_file_path("random_bits.txt")).read()[:N]
-    bin_data = bin_data + "0" * (N - len(bin_data) % N)
+    if len(bin_data)%N != 0:
+        bin_data = bin_data + ("0" * (N - (len(bin_data) % N)))
 
     i = 0
     all_xored = ""
