@@ -4,8 +4,9 @@ from src.file_io.wav import read_wav, write_wav
 from src.ofdm.estimate_channel import estimate_channel, calc_abs_angle_error
 import scipy.signal as scipy_signal
 import numpy as np
-from config import F
+from config import F, N, K, C, D, W, F0, F1
 from src.plotting.impulse_response import plot_h_freq_domain, plot_h_in_time
+import math
 
 
 class Recording:
@@ -218,3 +219,60 @@ class Recording:
             self.audio_format, rec2.audio_format)
 
         self.frames += rec2.frames
+
+    def extract_packets(self, delimiter_rec):
+        """
+        Extract data packets as an array of sequences each of length (D+W+D)*P
+        returns:
+            packet_arr: [ int16[] ] - array of packet data sequences
+            dither_arr: [ int ] - array of dithers for each packet
+        """
+        #constant declaration
+        P = N + K
+        DATA_WIDTH = (D + W + D) * P
+        PEAK_SEPARATION = DATA_WIDTH + C * P
+
+        # termination constants
+        MAX_PEAK_DELAY = 50
+        MAGNITUDE_THRESHOLD = 0.5
+
+        correlation_arr = np.abs(self.correlate(delimiter_rec))
+        
+        signal_arr = self.get_frames_as_int16()
+        data_length = len(signal_arr)
+
+        packet_arr = []
+        dither_arr = []
+
+        current_peak_index = np.argmax(correlation_arr[0 : W * P])
+        current_peak_value = correlation_arr[current_peak_index]
+
+        while (True):
+            next_peak_lower_bound = current_peak_index + PEAK_SEPARATION - MAX_PEAK_DELAY
+            next_peak_upper_bound = next_peak_lower_bound + 2 * MAX_PEAK_DELAY
+
+            if(next_peak_lower_bound >= data_length):
+                print("Reached end of recording")
+                break
+
+            correlation_arr_about_next_peak = correlation_arr[ next_peak_lower_bound : next_peak_upper_bound]
+            relative_index = np.argmax(correlation_arr_about_next_peak)
+            next_peak_value = correlation_arr_about_next_peak[relative_index]
+
+            if(next_peak_value <= MAGNITUDE_THRESHOLD * current_peak_value):
+                print("No peaks of sufficient magnitude found, end of data declared")
+                break
+
+            # Dither
+            dither = relative_index - MAX_PEAK_DELAY
+            dither_arr.append(dither)
+
+            # Packet
+            packet_data = signal_arr[current_peak_index : current_peak_index + DATA_WIDTH]
+            packet_arr.append(packet_data)
+
+            # update vars
+            current_peak_index = next_peak_lower_bound + relative_index
+            current_peak_value = next_peak_value
+
+        return packet_arr, dither_arr
