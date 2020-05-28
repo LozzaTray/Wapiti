@@ -50,6 +50,14 @@ def bits_to_wav_recording(data_bit_string, known_bit_string):
         upper_index = lower_index + W*P
 
         packet_data = data_sequence[lower_index : upper_index]
+        
+        # padding with repeat of first symbol
+        num_data_blocks = len(packet_data) // P
+        if(num_data_blocks < W):
+            first_block = packet_data[0 : P]
+            suffix = np.tile(first_block, W - num_data_blocks)
+            packet_data = np.concatenate((packet_data, suffix))
+
         packet_data_rec = Recording.from_list(packet_data, F)
 
         master_rec.append_recording(packet_data_rec)
@@ -79,8 +87,8 @@ def create_bits_for_file(file_name, file_path):
 def run():
 
     # get data pre-transmission
-    # source_file_name = input("File to encode (must be in data dir): ")
-    source_file_name = "elk.bmp"
+    source_file_name = input("File to encode (must be in data dir): ")
+    #source_file_name = "elk.bmp"
     source_file_path = get_data_file_path(source_file_name)
     source_bits = create_bits_for_file(source_file_name, source_file_path)
 
