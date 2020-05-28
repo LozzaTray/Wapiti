@@ -1,4 +1,4 @@
-# Python Setup Docs
+# Python Best Practices - Team Wapiti
 
 ## Virtual Environment VENV
 
@@ -47,3 +47,15 @@ pip install -e .
 ```
 
 The `-e` flag tells pip to install in editable mode (the `.` just denotes the current directory). That way any changes to the source code are carried through properly. We can now use pytest as we please. It is recommended to use a separate `test` directory to store all the tests. The naming convention here is important for pytest. Every test file and function therein should be prefixed with `test_` for test discovery to work properly.
+
+## Enabling Graphics in WSL
+
+This section is heavily borrowed from [Mianzhi Wang](https://research.wmz.ninja/articles/2017/11/setting-up-wsl-with-graphics-and-audio.html)
+
+WSL cannot display graphics on its own. The Linux subsytem needs a way of communicating with Windows. For this you need to install an X server on Windows. I use [Xming](https://sourceforge.net/projects/xming/). Once this is installed we need to tell Linux to connect to this display. The easiest way is to add the following command to the end of your `~/.bashrc` file which is executed each time a shell starts up.
+
+```
+export DISPLAY=:0.0
+```
+
+If all has worked, start the X server inside windows and then launch whichever graphic application you wanted from inside WSL (after reloading the shell). Try `gitk --all &` to view your git repo using a lightweight GUI.
