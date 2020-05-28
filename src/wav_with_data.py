@@ -5,7 +5,7 @@ from src.coding.encode import encode_bit_string
 from src.coding.decode import decode_symbol_sequence
 from src.coding.utils import text_to_bin
 from src.plotting.plot_recording import plot_recording
-from config import OUTPUT_DIR, SAMPLING_FREQ
+from config import OUTPUT_DIR, F
 import wave
 import os
 
@@ -28,7 +28,7 @@ def run():
     scaling = (2**15 -1)/max(abs(modulated_data))
     final_data = scaling * modulated_data
     # now make the recording and play/display, can probably save this as wav, or slot it between chirps
-    wav = Recording.from_list(final_data, SAMPLING_FREQ)
+    wav = Recording.from_list(final_data, F)
     wav.play()
     plot_recording(wav)
     save = input("would you like to save this recording? (y/n)")

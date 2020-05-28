@@ -4,13 +4,13 @@ from src.file_io.wav import read_wav, write_wav
 from src.ofdm.estimate_channel import estimate_channel, calc_abs_angle_error
 import scipy.signal as scipy_signal
 import numpy as np
-from config import SAMPLING_FREQ
+from config import F
 from src.plotting.impulse_response import plot_h_freq_domain, plot_h_in_time
 
 
 class Recording:
     # Default props
-    DEFAULT_RATE = SAMPLING_FREQ
+    DEFAULT_RATE = F
     DEFAULT_CHUNK = 1024
     DEFAULT_NUM_CHANNELS = 1
     DEFAULT_FORMAT = pyaudio.paInt16
@@ -77,9 +77,21 @@ class Recording:
     def from_list(cls, data_sequence, frame_rate):
         """Initialise audio from list"""
         data_sequence = np.array(data_sequence)
+        scaling = (2**15 -1)/max(abs(data_sequence))
+        
+        data_sequence = data_sequence*scaling
         bit_string = b"".join(data_sequence.astype(np.int16))
         return cls(
             frames=bit_string,
+            rate=frame_rate,
+            num_channels=1,
+            audio_format=pyaudio.paInt16
+        )
+
+    @classmethod
+    def empty(cls, frame_rate):
+        return cls(
+            frames=b"",
             rate=frame_rate,
             num_channels=1,
             audio_format=pyaudio.paInt16

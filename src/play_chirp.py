@@ -7,11 +7,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pyaudio
-from config import OUTPUT_DIR, SAMPLING_FREQ
+from config import OUTPUT_DIR, F
 
 
 def run():
-    fs = SAMPLING_FREQ
+    fs = F
     T = 1
     f0 = 20
     f1 = 1000
