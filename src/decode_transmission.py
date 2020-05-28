@@ -22,7 +22,7 @@ def run():
     print("decoding")
     decoded_signal = decode_symbol_sequence(demodulated_signal)
     print("xor time")
-    de_xored = xor(decoded_signal, N/2 - 1)
+    de_xored = xor(decoded_signal, N//2 - 1)
     print("jossy format")
     final = perform_jossy(de_xored)
 
