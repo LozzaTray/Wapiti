@@ -58,7 +58,7 @@ def run():
 
     # get data pre-transmission
     # source_file_name = input("File to encode (must be in data dir): ")
-    source_file_name = "random_bits.txt"
+    source_file_name = "elk.bmp"
     source_file_path = get_data_file_path(source_file_name)
     file_obj = open(source_file_path, mode="rb")
     source_bits = file_obj.read()
@@ -73,8 +73,12 @@ def run():
 
     # convert to wav
     rec = bits_to_wav_recording(source_bits, bit_mask)
-    rec.play()
     plot_recording(rec)
+
+    # optional save
+    out_file_name = input("File name to save under (.wav): ")
+    out_file_path = get_output_file_path(out_file_name + ".wav")
+    rec.save(out_file_path)
 
 
 if __name__ == "__main__":
