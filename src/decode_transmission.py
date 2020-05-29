@@ -1,5 +1,5 @@
 from src.audio.recording import Recording
-from src.file_io.utils import get_data_file_path
+from src.file_io.utils import get_recording_file_path
 from src.ofdm.estimate_channel import estimate_channel
 from src.ofdm.demodulate import demodulate_sequence
 from src.coding.decode import decode_symbol_sequence
@@ -16,7 +16,7 @@ def run():
     P = N + K
     print("Loading Recording...")
     signal_file = input("which file would you like to decode? (no .wav required) ")
-    signal_file = get_data_file_path(signal_file + ".wav")
+    signal_file = get_recording_file_path(signal_file + ".wav")
     signal_rec = Recording.from_file(signal_file)
     
     print("extracting packets")

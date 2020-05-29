@@ -1,7 +1,7 @@
 """code to generate wav from file"""
 from src.audio.recording import Recording
 from config import N, K, C, D, W, Q, q, F, F0, F1
-from src.file_io.utils import get_data_file_path, get_output_file_path
+from src.file_io.utils import get_data_file_path, get_recording_file_path
 from src.coding.encode import encode_bit_string
 from src.coding.utils import xor
 from src.ofdm.modulate import modulate_sequence
@@ -102,9 +102,9 @@ def run():
     # convert to wav
     rec = bits_to_wav_recording(source_bits, bit_mask)
 
-    # optional save
+    # save
     out_file_name = input("File name to save under (.wav): ")
-    out_file_path = get_output_file_path(out_file_name + ".wav")
+    out_file_path = get_recording_file_path(out_file_name + ".wav")
     rec.save(out_file_path)
 
 

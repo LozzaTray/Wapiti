@@ -3,6 +3,7 @@ import os
 _curr_dir = os.path.dirname(__file__)
 DATA_DIR = os.path.join(_curr_dir, "data")
 OUTPUT_DIR = os.path.join(_curr_dir, "output")
+RECORDING_DIR = os.path.join(_curr_dir, "recordings")
 
 MODE = "B" # "A", "B" or "C"
 _K_dict = {"A": 224, "B": 704, "C": 1184}

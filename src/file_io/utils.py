@@ -1,4 +1,4 @@
-from config import OUTPUT_DIR, DATA_DIR
+from config import OUTPUT_DIR, DATA_DIR, RECORDING_DIR
 import os
 
 
@@ -8,6 +8,10 @@ def get_output_file_path(file_name_short):
 
 def get_data_file_path(file_name_short):
     return os.path.join(DATA_DIR, file_name_short)
+
+
+def get_recording_file_path(file_name_short):
+    return os.path.join(RECORDING_DIR, file_name_short)
 
 
 def progress_bar(current, total,  barLength = 20):
