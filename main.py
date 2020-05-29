@@ -1,23 +1,23 @@
 """Main program Loop"""
 from src.make_recording import run as make_recording
 from src.open_recording import run as open_recording
-from src.play_chirp import run as gen_chirp
-from src.concatenate import run as concatenate
+from src.encode_transmission import run as encode_transmission
+from src.decode_transmission import run as decode_transmission
 from src.correlate import run as correlate
-from src.decode_csv import run as decode_csv
 from src.channel_estimator import run as estimate_channel
 from src.simulate_channel import run as simulate_channel
+from src.gen_standard_chirp import run as gen_standard_chirp
 
 
 options = {
     "1": "Make Recording",
     "2": "Open Recording",
-    "3": "Generate chirp",
-    "4": "Concatenate Recordings",
+    "3": "Encode Transmission",
+    "4": "Decode Transmission",
     "5": "Correlate Recordings",
-    "6": "Decode csv",
-    "7": "Estimate channel",
-    "8": "Pass recording through virtual channel",
+    "6": "Estimate Channel",
+    "7": "Simulate Channel",
+    "8": "Generate Chirp",
     "q": "Quit"
 }
 
@@ -44,17 +44,17 @@ def run():
         elif (option == "2"):
             open_recording()
         elif (option == "3"):
-            gen_chirp()
+            encode_transmission()
         elif (option == "4"):
-           concatenate()
+           decode_transmission()
         elif (option == "5"):
             correlate()
         elif (option == "6"):
-            decode_csv()
-        elif (option == "7"):
             estimate_channel()
-        elif (option == "8"):
+        elif (option == "7"):
             simulate_channel()
+        elif (option == "8"):
+            gen_standard_chirp()
 
     print("Quitting")
 

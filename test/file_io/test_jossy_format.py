@@ -1,4 +1,4 @@
-from src.decode_csv import bit_array_to_byte, parse_byte_sequence
+from src.file_io.jossy_format import bit_array_to_byte, parse_byte_sequence
 
 
 def test_bit_array_to_byte():
