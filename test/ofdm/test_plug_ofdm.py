@@ -4,15 +4,15 @@ import numpy as np
 
 
 def test_recovery_ideal_channel():
-    N = 6
+    N = 8
     K = 2
     Q1 = 1
-    Q2 = 5
+    Q2 = 3
     P = N + K
 
     channel_response = [1]
 
-    data = [1, 2, 3, 4, 5, 6, 7, 8]
+    data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     modulated_sequence = modulate_sequence(data, N, K, Q1, Q2)
 
@@ -24,15 +24,15 @@ def test_recovery_ideal_channel():
 
 
 def test_recovery_real_channel():
-    N = 6
+    N = 8
     K = 2
     Q1 = 1
-    Q2 = 5
+    Q2 = 3
     P = N + K
 
     channel_response = [1, 2]
 
-    actual_data = [1, 2, 3, 4, 5, 6, 7, 8]
+    actual_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     modulated_sequence = modulate_sequence(actual_data, N, K, Q1, Q2)
 

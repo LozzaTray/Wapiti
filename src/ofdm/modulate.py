@@ -10,21 +10,21 @@ def modulate_block(block, N, K, Q1, Q2):
     """
 
     # check block is of correct length
-    M = int((N / 2) - 1)
+    M = (N // 2) - 1
     Q = Q2 - Q1
     main_block = block
-    lower_block = block[:Q1]
-    upper_block = block[Q+Q2-M:]
-    block = np.concatenate((lower_block, main_block, upper_block))
+    lower_block = block[0 : Q1] # length Q1
+    upper_block = block[0 : M - Q2] #length M - Q2
+    expanded_block = np.concatenate((lower_block, main_block, upper_block))
 
-    if (len(block) != M):
+    if (len(expanded_block) != M):
         raise ValueError("Block is incorrect length")
 
     # manipulate block to produce real output
-    reverse_conjugate_block = np.conjugate(np.flip(block))
+    reverse_conjugate_block = np.conjugate(np.flip(expanded_block))
     modified_block = np.concatenate((
         [0],
-        block,
+        expanded_block,
         [0],
         reverse_conjugate_block
     ))
@@ -66,17 +66,3 @@ def modulate_sequence(data_sequence, N, K, Q1, Q2):
     real_part = np.real_if_close(modulated_sequence)
     scaled_sequence = scale_to_int16(real_part)
     return scaled_sequence
-
-
-def modulate_schmidl_odd(data_sequence, N, K):
-    """
-    Performs an odd schmidl modulation on a data sequence
-        data_sequence: num[]
-        N: int
-        K: int
-    """
-    d = len(data_sequence)
-    out = np.zeros( 2 * d - 1)
-    out[0 : len(out) : 2] = data_sequence # [start : stop : step] >> zeros at every odd index
-    modulated_sequence = modulate_sequence(out, N, K)
-    return modulated_sequence
