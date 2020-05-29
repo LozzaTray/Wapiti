@@ -1,16 +1,16 @@
 """Code for simulating a virtual channel"""
 from src.audio.recording import Recording
-from src.file_io.utils import get_output_file_path
+from src.file_io.utils import get_output_file_path, get_data_file_path
 from src.plotting.plot_recording import plot_recording
 
 
 def run():
     """main loop"""
     signal_file = input("Signal to load (.wav): ")
-    signal_file = get_output_file_path(signal_file + ".wav")
+    signal_file = get_data_file_path(signal_file + ".wav")
     signal = Recording.from_file(signal_file)
 
-    channel = [1 , 0.4 , 0, 0.5, 0.2, 0]
+    channel = [0.5 , 0.2 , 0, 0.1, 0.04, 0]
 
     print("Passing through channel...")
     received_signal = signal.pass_through_channel(channel)
