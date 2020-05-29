@@ -1,17 +1,15 @@
 """Code for recording and playing back audio"""
 from src.audio.recording import Recording
 from src.plotting.plot_recording import plot_recording
-from config import OUTPUT_DIR
-import os
+from src.file_io.utils import get_recording_file_path
 
 
 def run():
     """main loop"""
     file_name_short = input("File name to open (.wav): ")
-    file_name_full = os.path.join(OUTPUT_DIR, file_name_short + ".wav")
+    file_name_full = get_recording_file_path(file_name_short + ".wav")
 
     rec = Recording.from_file(file_name_full)
-    rec.play()
     plot_recording(rec)
 
 

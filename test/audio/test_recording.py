@@ -31,6 +31,7 @@ def test_from_list():
     rate = 1
     frames = [13, 17, 21]
     rec = Recording.from_list(frames, rate)
+    assert rec is not None
 
 
 def test_appending():
