@@ -1,5 +1,6 @@
 """Module for performing ofdm tasks"""
 from src.ofdm.utils import dft, pad_so_divisible
+from config import Q1, Q2
 import numpy as np
 
 
@@ -24,7 +25,7 @@ def demodulate_block(block, H_arr, N, K):
     demodulated_block = np.divide(dfted_block, H_arr)
 
     # only take positive frequency bins
-    relevant_bins = demodulated_block[1 : int(N/2)]
+    relevant_bins = demodulated_block[Q1: Q2]
     return relevant_bins
 
 

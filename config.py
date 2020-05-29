@@ -12,7 +12,9 @@ _K_dict = {"A": 224, "B": 704, "C": 1184}
 F = 48000
 N = 4096
 K = _K_dict[MODE]
-Q = 2047
+Q1 = 100
+Q2 = 1500
+Q = Q2 - Q1
 q = 2
 
 # Frame params

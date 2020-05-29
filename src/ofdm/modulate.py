@@ -1,5 +1,6 @@
 """Module for performing ofdm tasks"""
 from src.ofdm.utils import idft, pad_so_divisible, insert_cyclic_prefix
+from config import Q1, Q2
 import numpy as np
 
 
@@ -11,6 +12,12 @@ def modulate_block(block, N, K):
 
     # check block is of correct length
     M = int((N / 2) - 1)
+    Q = Q2 - Q1
+    main_block = block
+    lower_block = block[:Q1]
+    upper_block = block[Q+Q2-M:]
+    block = np.concatenate((lower_block, main_block, upper_block))
+
     if (len(block) != M):
         raise ValueError("Block is incorrect length")
 
@@ -44,7 +51,7 @@ def modulate_sequence(data_sequence, N, K):
     if(N % 2 != 0):
         raise ValueError("N must be an even integer")
 
-    M = int((N/2) - 1)
+    M = Q2 - Q1
     padded_sequence = pad_so_divisible(data_sequence, M)
     sequence_length = len(padded_sequence)
     num_blocks = int(sequence_length / M)
