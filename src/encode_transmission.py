@@ -44,8 +44,6 @@ def bits_to_wav_recording(data_bit_string, known_bit_string):
 
     print("Splitting into packets...")
     for i in range(0, num_packets):
-        master_rec.append_recording(known_rec)
-
         lower_index = i*W*P
         upper_index = lower_index + W*P
 
@@ -58,10 +56,15 @@ def bits_to_wav_recording(data_bit_string, known_bit_string):
             suffix = np.tile(first_block, W - num_data_blocks)
             packet_data = np.concatenate((packet_data, suffix))
 
-        packet_data_rec = Recording.from_list(packet_data, F)
+        known_packet_known = np.concatenate((
+            known_block_repeated,
+            packet_data,
+            known_block_repeated
+        ))
+
+        packet_data_rec = Recording.from_list(known_packet_known, F, rescale=True)
 
         master_rec.append_recording(packet_data_rec)
-        master_rec.append_recording(known_rec)
         master_rec.append_recording(chirp_rec)
 
     print("Done creating transmission")

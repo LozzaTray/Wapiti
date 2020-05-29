@@ -9,6 +9,7 @@ import scipy.signal as scipy_signal
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from src.audio.utils import scale_to_int16
 
 
 class Recording:
@@ -77,10 +78,14 @@ class Recording:
         )
 
     @classmethod
-    def from_list(cls, data_sequence, frame_rate):
+    def from_list(cls, data_sequence, frame_rate, rescale=False):
         """Initialise audio from list"""
-        data_sequence = np.array(data_sequence)
-        bit_string = b"".join(data_sequence.astype(np.int16))
+        if rescale:
+            data_sequence = scale_to_int16(data_sequence)
+        else:
+            data_sequence = np.array(data_sequence).astype(np.int16)
+            
+        bit_string = b"".join(data_sequence)
         return cls(
             frames=bit_string,
             rate=frame_rate,
@@ -276,7 +281,7 @@ class Recording:
             current_peak_value = next_peak_value
 
         return packet_arr, dither_arr
-    
+
     def sync_chirp(self, signal_file):
         """Find data sequences based on matched filter convolution with a chirp
         signal_file - path/name.wav"""
