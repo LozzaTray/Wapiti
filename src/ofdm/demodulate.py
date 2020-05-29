@@ -28,14 +28,15 @@ def demodulate_block(block, H_arr, N, K, Q1, Q2):
     return relevant_bins
 
 
-def demodulate_sequence(received_sequence, channel_impulse_response, N, K, Q1, Q2):
+def demodulate_sequence(received_sequence, channel_impulse_response_start, channel_impulse_response_end, N, K, Q1, Q2):
     """decodes by taking the DFT of the received_sequence and channel_impulse_response
     then apply point-wise division to get the true symbol value"""
 
     if (N % 2 != 0):
         raise ValueError("N must be an even integer")
 
-    H_arr = dft(channel_impulse_response, N)
+    H_start = dft(channel_impulse_response_start, N)
+    H_end = dft(channel_impulse_response_end, N)
 
     P = N + K
     padded_sequence = pad_so_divisible(received_sequence, P)
@@ -47,9 +48,11 @@ def demodulate_sequence(received_sequence, channel_impulse_response, N, K, Q1, Q
     for i in range(0, num_blocks):
         lower_index = i * P
         upper_index = lower_index + P
-        
+        H_arr_block = H_start + (H_end - H_start)*i/num_blocks
+
         block = padded_sequence[lower_index : upper_index]
-        demodulated_block = demodulate_block(block, H_arr, N, K, Q1, Q2)
+        demodulated_block = demodulate_block(block, H_arr_block, N, K, Q1, Q2)
+
 
         demodulated_sequence = np.concatenate((demodulated_sequence, demodulated_block))
 

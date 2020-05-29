@@ -45,9 +45,10 @@ def run():
         #plot_h_in_time(h_a)
         #plot_h_in_time(h_b)
 
+
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)
-        demodulated_signal = demodulate_sequence(packet_data, h_a, N, K, Q1=Q1, Q2=Q2)
+        demodulated_signal = demodulate_sequence(packet_data, h_a, h_b, N, K, Q1=Q1, Q2=Q2)
 
         #decode
         progress_bar(i*num_steps + 1, num_packets*num_steps)
