@@ -1,10 +1,9 @@
 """Module for performing ofdm tasks"""
 from src.ofdm.utils import idft, pad_so_divisible, insert_cyclic_prefix, scale_to_int16
-from config import Q1, Q2
 import numpy as np
 
 
-def modulate_block(block, N, K):
+def modulate_block(block, N, K, Q1, Q2):
     """
     encodes the data_sequence X into the the time sequence x 
     by taking the iDFT and inserting a cyclic prefix of length K
@@ -36,7 +35,7 @@ def modulate_block(block, N, K):
     return x_cyclic
 
 
-def modulate_sequence(data_sequence, N, K):
+def modulate_sequence(data_sequence, N, K, Q1, Q2):
     """
     modulates given data sequence
     block length N
@@ -61,7 +60,7 @@ def modulate_sequence(data_sequence, N, K):
         lower_index = i * M
         upper_index = lower_index + M
         block = padded_sequence[lower_index : upper_index]
-        modulated_block = modulate_block(block, N, K)
+        modulated_block = modulate_block(block, N, K, Q1, Q2)
         modulated_sequence = np.concatenate((modulated_sequence, modulated_block))
 
     real_part = np.real_if_close(modulated_sequence)

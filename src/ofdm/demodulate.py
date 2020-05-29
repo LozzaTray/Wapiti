@@ -1,10 +1,9 @@
 """Module for performing ofdm tasks"""
 from src.ofdm.utils import dft, pad_so_divisible
-from config import Q1, Q2
 import numpy as np
 
 
-def demodulate_block(block, H_arr, N, K):
+def demodulate_block(block, H_arr, N, K, Q1, Q2):
     """
     demodulates a single block
         block: complex[] length N+K
@@ -29,7 +28,7 @@ def demodulate_block(block, H_arr, N, K):
     return relevant_bins
 
 
-def demodulate_sequence(received_sequence, channel_impulse_response, N=1024, K=32):
+def demodulate_sequence(received_sequence, channel_impulse_response, N, K, Q1, Q2):
     """decodes by taking the DFT of the received_sequence and channel_impulse_response
     then apply point-wise division to get the true symbol value"""
 
@@ -50,7 +49,7 @@ def demodulate_sequence(received_sequence, channel_impulse_response, N=1024, K=3
         upper_index = lower_index + P
         
         block = padded_sequence[lower_index : upper_index]
-        demodulated_block = demodulate_block(block, H_arr, N, K)
+        demodulated_block = demodulate_block(block, H_arr, N, K, Q1, Q2)
 
         demodulated_sequence = np.concatenate((demodulated_sequence, demodulated_block))
 

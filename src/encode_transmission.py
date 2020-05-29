@@ -1,6 +1,6 @@
 """code to generate wav from file"""
 from src.audio.recording import Recording
-from config import N, K, C, D, W, Q, q, F, F0, F1
+from config import N, K, C, D, W, Q, Q1, Q2, q, F, F0, F1
 from src.file_io.utils import get_data_file_path, get_recording_file_path
 from src.coding.encode import encode_bit_string
 from src.coding.utils import xor
@@ -14,7 +14,7 @@ def bits_to_ofdm_sequence(bit_string):
     print("Modulating bit pairs into constellation...")
     symbol_sequence = encode_bit_string(bit_string)
     print("Converting into time domain...")
-    modulated_sequence = modulate_sequence(symbol_sequence, N=N, K=K)
+    modulated_sequence = modulate_sequence(symbol_sequence, N=N, K=K, Q1=Q1, Q2=Q2)
     return modulated_sequence
 
 

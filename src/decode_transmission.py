@@ -6,7 +6,7 @@ from src.coding.decode import decode_symbol_sequence
 from src.coding.utils import xor
 from src.file_io.jossy_format import perform_jossy
 from src.audio.chirp import generate_chirp_recording
-from config import N, K, F, F0, F1, C, D
+from config import N, K, F, F0, F1, C, D, Q1, Q2
 from src.file_io.utils import progress_bar
 from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
 from src.ofdm.known_data import gen_known_data_chunk
@@ -47,7 +47,7 @@ def run():
 
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)
-        demodulated_signal = demodulate_sequence(packet_data, h_a, N, K)
+        demodulated_signal = demodulate_sequence(packet_data, h_a, N, K, Q1=Q1, Q2=Q2)
 
         #decode
         progress_bar(i*num_steps + 1, num_packets*num_steps)
