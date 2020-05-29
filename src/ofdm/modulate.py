@@ -12,9 +12,9 @@ def modulate_block(block, N, K, Q1, Q2):
     # check block is of correct length
     M = (N // 2) - 1
     Q = Q2 - Q1
-    main_block = block
-    lower_block = block[0 : Q1] # length Q1
-    upper_block = block[0 : M - Q2] #length M - Q2
+    main_block = block # length Q2 - Q1
+    lower_block = block[0 : Q1 - 1] # length Q1 - 1
+    upper_block = block[0 : M - Q2 + 1] #length M - Q2 + 1
     expanded_block = np.concatenate((lower_block, main_block, upper_block))
 
     if (len(expanded_block) != M):
