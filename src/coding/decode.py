@@ -1,6 +1,7 @@
 """Module for decoding"""
 import numpy
 import math
+from functools import reduce
 
 
 def decode_symbol(complex_symbol):
@@ -29,10 +30,7 @@ def decode_symbol_sequence(symbol_sequence):
     """
     decodes the symbol sequence, output of the form 'xxx...xxx'
     """
-
-    bit_sequence = numpy.array(list(map(decode_symbol, symbol_sequence)))
-    bits = bit_sequence[0]
-    for i in range(len(bit_sequence)-1):
-        bits += bit_sequence[i+1]
-
+    bit_map = map(decode_symbol, symbol_sequence)
+    bit_list = list(bit_map)  
+    bits = reduce(lambda x, y: x + y, bit_list)
     return bits

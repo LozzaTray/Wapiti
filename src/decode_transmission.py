@@ -9,6 +9,8 @@ from src.audio.chirp import generate_chirp_recording
 from config import N, K, F, F0, F1, C, D
 from src.file_io.utils import progress_bar
 from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
+from src.ofdm.known_data import gen_known_data_chunk
+from src.plotting.impulse_response import plot_h_in_time
 
 def run():
     P = N + K
@@ -37,8 +39,11 @@ def run():
         packet_data = packet[D * P : - D * P]
 
         #estimate channel at start
-        h_a = [1] #estimate_channel TODO
-        h_b = [1] #estimate channel TODO
+        known_data_pre_trans = gen_known_data_chunk(N, K)
+        h_a = estimate_channel(known_data_at_start, known_data_pre_trans, N, K)
+        h_b = estimate_channel(known_data_at_end, known_data_pre_trans, N, K)
+        plot_h_in_time(h_a)
+        plot_h_in_time(h_b)
 
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)
