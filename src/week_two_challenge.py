@@ -137,5 +137,5 @@ def q3():
 if __name__ == "__main__":
     print("\nTeam Wapiti - Week 2 Challenge\n~~~~~~~~~~~~~~~~~~~\n")
     #q1()
-    #q2()
-    q3()
+    q2()
+    #q3()

@@ -268,7 +268,8 @@ class Recording:
             dither_arr.append(dither)
 
             # Packet
-            packet_data = signal_arr[current_peak_index : current_peak_index + DATA_WIDTH]
+            data_start_index = current_peak_index + 1
+            packet_data = signal_arr[data_start_index : data_start_index + DATA_WIDTH]
             packet_arr.append(packet_data)
 
             # update vars

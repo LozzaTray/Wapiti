@@ -8,6 +8,7 @@ from src.file_io.jossy_format import perform_jossy
 from src.audio.chirp import generate_chirp_recording
 from config import N, K, F, F0, F1, C, D
 from src.file_io.utils import progress_bar
+from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
 
 def run():
     P = N + K
@@ -24,9 +25,9 @@ def run():
     print("\nPackets found: {}\n".format(num_packets))
 
     data_sequence = ""
+    num_steps = 3
     print("Decoding packets")
     for i in range(0, num_packets):
-        progress_bar(i+1, num_packets)
         packet = packet_arr[i]
         dither = dither_arr[i]
 
@@ -39,25 +40,21 @@ def run():
         h_a = [1] #estimate_channel TODO
         h_b = [1] #estimate channel TODO
 
+        #demodulate
+        progress_bar(i*num_steps, num_packets*num_steps)
         demodulated_signal = demodulate_sequence(packet_data, h_a, N, K)
-        decoded_signal = decode_symbol_sequence(demodulated_signal)
+
+        #decode
+        progress_bar(i*num_steps + 1, num_packets*num_steps)
+        decoded_signal = decode_symbol_sequence(demodulated_signal) #slowest step by far
+
+        #xor
+        progress_bar(i*num_steps + 2, num_packets*num_steps)
         de_xored = xor(decoded_signal, N//2 - 1)
         data_sequence = data_sequence + de_xored
 
-    print(data_sequence)
-    
-    # print("estimating channel")
-    # channel_estimate = estimate_channel(received_signal, known_sequence, N=N, K=K)
-    # print("demodulating")
-    # demodulated_signal = demodulate_sequence(received_signal, channel_estimate, N, K)
-    # print("decoding")
-    # decoded_signal = decode_symbol_sequence(demodulated_signal)
-    # print("xor time")
-    # de_xored = xor(decoded_signal, N//2 - 1)
-    # print("jossy format")
-    # final = perform_jossy(de_xored)
-
-
+    progress_bar(num_packets*num_steps, num_packets*num_steps)
+    decode_bit_string_jossy_format_and_save(data_sequence)
 
 
 if __name__ == "__main__":

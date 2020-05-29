@@ -10,7 +10,7 @@ def get_data_file_path(file_name_short):
     return os.path.join(DATA_DIR, file_name_short)
 
 
-def progress_bar(current, total, barLength = 20):
+def progress_bar(current, total,  barLength = 20):
     percent = float(current) * 100 / total
     arrow   = '-' * int(percent/100 * barLength - 1) + '>'
     spaces  = ' ' * (barLength - len(arrow))
