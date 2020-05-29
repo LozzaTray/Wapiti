@@ -42,8 +42,8 @@ def run():
         known_data_pre_trans = gen_known_data_chunk(N, K)
         h_a = estimate_channel(known_data_at_start, known_data_pre_trans, N, K)
         h_b = estimate_channel(known_data_at_end, known_data_pre_trans, N, K)
-        plot_h_in_time(h_a)
-        plot_h_in_time(h_b)
+        #plot_h_in_time(h_a)
+        #plot_h_in_time(h_b)
 
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)

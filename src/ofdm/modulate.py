@@ -1,5 +1,5 @@
 """Module for performing ofdm tasks"""
-from src.ofdm.utils import idft, pad_so_divisible, insert_cyclic_prefix
+from src.ofdm.utils import idft, pad_so_divisible, insert_cyclic_prefix, scale_to_int16
 from config import Q1, Q2
 import numpy as np
 
@@ -64,7 +64,9 @@ def modulate_sequence(data_sequence, N, K):
         modulated_block = modulate_block(block, N, K)
         modulated_sequence = np.concatenate((modulated_sequence, modulated_block))
 
-    return np.real_if_close(modulated_sequence)
+    real_part = np.real_if_close(modulated_sequence)
+    scaled_sequence = scale_to_int16(real_part)
+    return scaled_sequence
 
 
 def modulate_schmidl_odd(data_sequence, N, K):

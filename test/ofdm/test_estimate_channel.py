@@ -37,8 +37,8 @@ def test_estimate_channel_average():
 
 def test_estimate_channel_hard():
     rate = 1
-    signal = [2, 3, 1, 2, 3, 2, 3, 1, 2, 3]
-    filt = [10, 2, 1]
+    signal = [20, 30, 10, 20, 30, 20, 30, 10, 20, 30]
+    filt = [10, 7, 1]
     N = 3
     K = 2
 

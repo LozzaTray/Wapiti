@@ -47,7 +47,7 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
             X_freq_arr,
             out=np.zeros_like(Y_freq_arr),
             where=X_freq_arr!=0
-        )
+        ) # if trying to divide by zero, set output to 0
 
         # set equal to neighbours
         H_sample[0] = H_sample[1]
@@ -58,5 +58,5 @@ def estimate_channel(y_arr, x_arr, N: int, K: int):
     # take average
     H = np.average(H, axis=0)
     h = idft(H, N)
-    #h = np.real_if_close(h) # must be real channel in reality
+    h = np.real_if_close(h) # must be real channel in reality
     return h

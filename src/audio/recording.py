@@ -80,9 +80,6 @@ class Recording:
     def from_list(cls, data_sequence, frame_rate):
         """Initialise audio from list"""
         data_sequence = np.array(data_sequence)
-        scaling = (2**15 -1)/max(abs(data_sequence))
-        
-        data_sequence = data_sequence*scaling
         bit_string = b"".join(data_sequence.astype(np.int16))
         return cls(
             frames=bit_string,
