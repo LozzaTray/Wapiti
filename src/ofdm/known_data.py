@@ -1,4 +1,4 @@
-from config import Q, q, D
+from config import Q, q, D, Q1, Q2
 from src.file_io.utils import get_data_file_path
 from src.coding.encode import encode_bit_string
 from src.ofdm.modulate import modulate_sequence
@@ -17,7 +17,7 @@ def gen_known_data_chunk(N, K):
     # map to QPSK
     symbol_sequence = encode_bit_string(bit_string)
     # convert to time-domain
-    known_block = modulate_sequence(symbol_sequence, N=N, K=K)
+    known_block = modulate_sequence(symbol_sequence, N=N, K=K, Q1=Q1, Q2=Q2)
     
     # check just one block long
     P = N + K
