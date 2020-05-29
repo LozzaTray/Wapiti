@@ -6,6 +6,7 @@ from src.coding.encode import encode_bit_string
 from src.coding.utils import xor
 from src.ofdm.modulate import modulate_sequence
 from src.audio.chirp import generate_chirp_recording
+from src.ofdm.known_data import gen_known_data_chunk
 import numpy as np
 import math
 
@@ -18,16 +19,14 @@ def bits_to_ofdm_sequence(bit_string):
     return modulated_sequence
 
 
-def bits_to_wav_recording(data_bit_string, known_bit_string):
+def bits_to_wav_recording(data_bit_string):
     P = N + K
     
     print("Generating chirp delimiter...")
     chirp_rec = generate_chirp_recording(F, F0, F1, C*P)
 
     print("Generating known OFDM block...")
-    known_block = bits_to_ofdm_sequence(known_bit_string)
-    known_block_repeated = np.tile(known_block, D)
-    known_rec = Recording.from_list(known_block_repeated, F)
+    known_block_repeated = gen_known_data_chunk(N, K)
 
     print("Performing XOR of real data with bit_mask...")
     xored_string = xor(data_bit_string, N//2 - 1)
@@ -91,19 +90,13 @@ def run():
 
     # get data pre-transmission
     source_file_name = input("File to encode (must be in data dir): ")
+    
     #source_file_name = "elk.bmp"
     source_file_path = get_data_file_path(source_file_name)
     source_bits = create_bits_for_file(source_file_name, source_file_path)
 
-    # known bits
-    known_file = get_data_file_path("random_bits.txt")
-    file_obj = open(known_file, mode="r")
-    bits = file_obj.read()
-    bit_mask = bits[0 : Q*q] # just sufficient for first symbol
-    file_obj.close()
-
     # convert to wav
-    rec = bits_to_wav_recording(source_bits, bit_mask)
+    rec = bits_to_wav_recording(source_bits)
 
     # save
     out_file_name = input("File name to save under (.wav): ")
