@@ -234,10 +234,11 @@ class Recording:
         #constant declaration
         DATA_WIDTH = (D + W + D) * P
         PEAK_SEPARATION = DATA_WIDTH + C * P
+        BACK_SHIFT = 10
 
         # termination constants
-        MAX_PEAK_DELAY = 50
-        MAGNITUDE_THRESHOLD = 0.5
+        MAX_PEAK_DELAY = 100
+        MAGNITUDE_THRESHOLD = 0.2
 
         correlation_arr = np.abs(self.correlate(delimiter_rec))
         
@@ -271,7 +272,11 @@ class Recording:
             dither_arr.append(dither)
 
             # Packet
-            data_start_index = current_peak_index + 1
+            data_start_index = current_peak_index + 1 - BACK_SHIFT
+
+            if (dither < 0): # will get ahead of itself
+                data_start_index = data_start_index + dither
+
             packet_data = signal_arr[data_start_index : data_start_index + DATA_WIDTH]
             packet_arr.append(packet_data)
 

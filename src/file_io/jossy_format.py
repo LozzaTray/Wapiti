@@ -108,14 +108,19 @@ def decode_bit_string_jossy_format_and_save(bit_string):
     byte_sequence = [ bit_string[ i : i + bits_per_byte] for i in range(0, num_bytes * bits_per_byte, bits_per_byte) ]
     byte_sequence = np.array(list(map(bit_array_to_byte, byte_sequence))).astype("uint8")
 
-    print("Saving raw decoder output under raw.bin")
+    print("Saving raw bytes to output/raw.bin")
     raw_out_file = get_output_file_path("raw.bin")
     byte_sequence.tofile(raw_out_file)
     
-    title, file_length, file_bytes = parse_byte_sequence(byte_sequence)
+    try:
+        title, file_length, file_bytes = parse_byte_sequence(byte_sequence)
 
-    print("Successfully decoded: " + title + " (" + str(file_length) + " bytes)")
-    
-    print("Saving file...")
-    output_file = get_output_file_path(title)
-    file_bytes.tofile(output_file)
+        print("Successfully decoded: " + title + " (" + str(file_length) + " bytes)")
+        
+        print("Saving file...")
+        output_file = get_output_file_path(title)
+        file_bytes.tofile(output_file)
+
+    except:
+        print("\n#######################\n- File Header damaged -\n#######################\n")
+        print("Check output/raw.bin for raw bytes")

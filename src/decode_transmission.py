@@ -13,11 +13,12 @@ from src.ofdm.known_data import gen_known_data_chunk
 from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
 
 def run():
+    debug = True
+
     mode = input("Mode: ")
     K = get_K(mode)
 
     P = N + K
-    print("Loading Recording...")
     signal_file = input("which file would you like to decode? (no .wav required) ")
     signal_file = get_recording_file_path(signal_file + ".wav")
     signal_rec = Recording.from_file(signal_file)
@@ -29,12 +30,14 @@ def run():
     num_packets = len(packet_arr)
     print("\nPackets found: {}\n".format(num_packets))
 
+    print("Dither array: ")
+    print(dither_arr)
+
     data_sequence = ""
     num_steps = 3
     print("Decoding packets")
     for i in range(0, num_packets):
         packet = packet_arr[i]
-        dither = dither_arr[i]
 
         #slicing key data
         known_data_at_start = packet[0 : D * P]
@@ -45,11 +48,12 @@ def run():
         known_data_pre_trans = gen_known_data_chunk(N, K)
         h_a = estimate_channel(known_data_at_start, known_data_pre_trans, N, K)
         h_b = estimate_channel(known_data_at_end, known_data_pre_trans, N, K)
-        #plot_h_in_time(h_a)
-        #plot_h_in_time(h_b)
-        #plot_h_freq_domain(h_a, N)
-        #plot_h_freq_domain(h_b, N)
-
+        
+        if debug:
+            plot_h_in_time(h_a)
+            plot_h_in_time(h_b)
+            plot_h_freq_domain(h_a, N)
+            plot_h_freq_domain(h_b, N)
 
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)
