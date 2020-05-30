@@ -121,6 +121,7 @@ def decode_bit_string_jossy_format_and_save(bit_string):
         output_file = get_output_file_path(title)
         file_bytes.tofile(output_file)
 
-    except:
+    except Exception as e:
+        print(e)
         print("\n#######################\n- File Header damaged -\n#######################\n")
         print("Check output/raw.bin for raw bytes")

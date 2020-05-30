@@ -51,9 +51,9 @@ def run():
         
         if debug:
             plot_h_in_time(h_a)
-            #plot_h_in_time(h_b)
+            plot_h_in_time(h_b)
             plot_h_freq_domain(h_a, N)
-            #plot_h_freq_domain(h_b, N)
+            plot_h_freq_domain(h_b, N)
 
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)

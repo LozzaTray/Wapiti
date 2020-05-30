@@ -9,5 +9,5 @@ def test_demodulate_sequence():
 
     received_sequence = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     channel_response = [1]
-    demodulated_sequence = demodulate_sequence(received_sequence, channel_response, N, K, Q1, Q2)
+    demodulated_sequence = demodulate_sequence(received_sequence, channel_response, channel_response, N, K, Q1, Q2)
     assert len(demodulated_sequence) == Q
