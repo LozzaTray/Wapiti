@@ -20,3 +20,5 @@ def progress_bar(current, total,  barLength = 20):
     spaces  = ' ' * (barLength - len(arrow))
 
     print('Progress: [%s%s] %d %%' % (arrow, spaces, percent), end='\r')
+    if(current == total):
+        print()

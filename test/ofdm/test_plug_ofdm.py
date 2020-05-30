@@ -22,7 +22,7 @@ def test_recovery_ideal_channel():
     assert len(modulated_sequence) == num_packets * P
 
     sent_sequence = np.convolve(modulated_sequence, channel_response)[0 : num_packets * P]
-    demodulated_sequence = demodulate_sequence(sent_sequence, channel_response, N, K, Q1, Q2)
+    demodulated_sequence = demodulate_sequence(sent_sequence, channel_response, channel_response, N, K, Q1, Q2)
     just_real_integers = np.round(np.real_if_close(demodulated_sequence))
 
     assert list(just_real_integers) == list(data)
@@ -45,7 +45,7 @@ def test_recovery_real_channel():
     modulated_sequence = modulate_sequence(actual_data, N, K, Q1, Q2)
 
     sent_sequence = np.convolve(modulated_sequence, channel_response)[0 : num_packets * P]
-    demodulated_sequence = demodulate_sequence(sent_sequence, channel_response, N, K, Q1, Q2)
+    demodulated_sequence = demodulate_sequence(sent_sequence, channel_response, channel_response, N, K, Q1, Q2)
     received_data = np.round(np.real_if_close(demodulated_sequence))
 
     assert list(received_data) == list(actual_data)
