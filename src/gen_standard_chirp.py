@@ -6,13 +6,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pyaudio
-from config import F, F0, F1, C, N, _K_dict
+from config import F, F0, F1, C, N, get_K
 from src.file_io.utils import get_recording_file_path
 
 
 def run():
     mode = input("Which mode {A, B, C}: ")
-    K = _K_dict[mode]
+    K = get_K(mode)
     P = N + K
 
     print("Generating chirp...")

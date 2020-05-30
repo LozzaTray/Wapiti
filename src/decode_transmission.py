@@ -6,13 +6,16 @@ from src.coding.decode import decode_symbol_sequence
 from src.coding.utils import xor
 from src.file_io.jossy_format import perform_jossy
 from src.audio.chirp import generate_chirp_recording
-from config import N, K, F, F0, F1, C, D, Q1, Q2
+from config import N, get_K, F, F0, F1, C, D, Q1, Q2
 from src.file_io.utils import progress_bar
 from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
 from src.ofdm.known_data import gen_known_data_chunk
-from src.plotting.impulse_response import plot_h_in_time
+from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
 
 def run():
+    mode = input("Mode: ")
+    K = get_K(mode)
+
     P = N + K
     print("Loading Recording...")
     signal_file = input("which file would you like to decode? (no .wav required) ")
@@ -21,7 +24,7 @@ def run():
     
     print("extracting packets")
     chirp_rec = generate_chirp_recording(F, F0, F1, C*P)
-    packet_arr, dither_arr = signal_rec.extract_packets(chirp_rec)
+    packet_arr, dither_arr = signal_rec.extract_packets(chirp_rec, P)
 
     num_packets = len(packet_arr)
     print("\nPackets found: {}\n".format(num_packets))
@@ -44,6 +47,8 @@ def run():
         h_b = estimate_channel(known_data_at_end, known_data_pre_trans, N, K)
         #plot_h_in_time(h_a)
         #plot_h_in_time(h_b)
+        #plot_h_freq_domain(h_a, N)
+        #plot_h_freq_domain(h_b, N)
 
 
         #demodulate

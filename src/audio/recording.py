@@ -1,5 +1,5 @@
 """module for recording and playing wav objects"""
-from config import F, N, K, C, D, W, F0, F1
+from config import F, C, D, W
 from src.file_io.wav import read_wav, write_wav
 from src.ofdm.estimate_channel import estimate_channel, calc_abs_angle_error
 from src.file_io.utils import get_output_file_path
@@ -224,7 +224,7 @@ class Recording:
 
         self.frames += rec2.frames
 
-    def extract_packets(self, delimiter_rec):
+    def extract_packets(self, delimiter_rec, P):
         """
         Extract data packets as an array of sequences each of length (D+W+D)*P
         returns:
@@ -232,7 +232,6 @@ class Recording:
             dither_arr: [ int ] - array of dithers for each packet
         """
         #constant declaration
-        P = N + K
         DATA_WIDTH = (D + W + D) * P
         PEAK_SEPARATION = DATA_WIDTH + C * P
 

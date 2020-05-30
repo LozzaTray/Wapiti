@@ -1,6 +1,6 @@
 """code to generate wav from file"""
 from src.audio.recording import Recording
-from config import N, K, C, D, W, Q, Q1, Q2, q, F, F0, F1
+from config import N, get_K, C, D, W, Q, Q1, Q2, q, F, F0, F1
 from src.file_io.utils import get_data_file_path, get_recording_file_path
 from src.coding.encode import encode_bit_string
 from src.coding.utils import xor
@@ -11,7 +11,7 @@ import numpy as np
 import math
 
 
-def bits_to_ofdm_sequence(bit_string):
+def bits_to_ofdm_sequence(bit_string, K):
     print("Modulating bit pairs into constellation...")
     symbol_sequence = encode_bit_string(bit_string)
     print("Converting into time domain...")
@@ -19,7 +19,7 @@ def bits_to_ofdm_sequence(bit_string):
     return modulated_sequence
 
 
-def bits_to_wav_recording(data_bit_string):
+def bits_to_wav_recording(data_bit_string, K):
     P = N + K
     
     print("Generating chirp delimiter...")
@@ -32,7 +32,7 @@ def bits_to_wav_recording(data_bit_string):
     xored_string = xor(data_bit_string, N//2 - 1)
 
     print("Generating OFDM data sequence...")
-    data_sequence = bits_to_ofdm_sequence(xored_string)
+    data_sequence = bits_to_ofdm_sequence(xored_string, K)
 
     # constructing packets
     num_blocks = len(data_sequence) // P
@@ -87,6 +87,9 @@ def create_bits_for_file(file_name, file_path):
 
 
 def run():
+    # get mode
+    mode = input("Transmission mode: ")
+    K = get_K(mode)
 
     # get data pre-transmission
     source_file_name = input("File to encode (must be in data dir): ")
@@ -96,7 +99,7 @@ def run():
     source_bits = create_bits_for_file(source_file_name, source_file_path)
 
     # convert to wav
-    rec = bits_to_wav_recording(source_bits)
+    rec = bits_to_wav_recording(source_bits, K)
 
     # save
     out_file_name = input("File name to save under (.wav): ")
