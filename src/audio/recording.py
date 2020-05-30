@@ -274,7 +274,7 @@ class Recording:
             # Packet
             data_start_index = current_peak_index + 1 - BACK_SHIFT
 
-            if (dither < 0): # will get ahead of itself
+            if (dither < 0): # if dither -ve, receiver too fast so will get ahead of itself
                 data_start_index = data_start_index - abs(dither)
 
             packet_data = signal_arr[data_start_index : data_start_index + DATA_WIDTH]

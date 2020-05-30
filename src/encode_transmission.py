@@ -12,9 +12,7 @@ import math
 
 
 def bits_to_ofdm_sequence(bit_string, K):
-    print("Modulating bit pairs into constellation...")
     symbol_sequence = encode_bit_string(bit_string)
-    print("Converting into time domain...")
     modulated_sequence = modulate_sequence(symbol_sequence, N=N, K=K, Q1=Q1, Q2=Q2)
     return modulated_sequence
 
@@ -29,7 +27,7 @@ def bits_to_wav_recording(data_bit_string, K):
     known_block_repeated = gen_known_data_chunk(N, K)
 
     print("Performing XOR of real data with bit_mask...")
-    xored_string = xor(data_bit_string, N//2 - 1)
+    xored_string = xor(data_bit_string, Q*q)
 
     print("Generating OFDM data sequence...")
     data_sequence = bits_to_ofdm_sequence(xored_string, K)
