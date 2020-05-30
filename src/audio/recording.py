@@ -275,7 +275,7 @@ class Recording:
             data_start_index = current_peak_index + 1 - BACK_SHIFT
 
             if (dither < 0): # will get ahead of itself
-                data_start_index = data_start_index + dither
+                data_start_index = data_start_index - abs(dither)
 
             packet_data = signal_arr[data_start_index : data_start_index + DATA_WIDTH]
             packet_arr.append(packet_data)
