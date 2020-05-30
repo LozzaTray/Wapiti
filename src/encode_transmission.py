@@ -7,6 +7,7 @@ from src.coding.utils import xor
 from src.ofdm.modulate import modulate_sequence
 from src.audio.chirp import generate_chirp_recording
 from src.ofdm.known_data import gen_known_data_chunk
+from src.file_io.utils import progress_bar
 import numpy as np
 import math
 
@@ -26,36 +27,43 @@ def bits_to_wav_recording(data_bit_string, K):
     print("Generating known OFDM block...")
     known_block_repeated = gen_known_data_chunk(N, K)
 
-    print("Performing XOR of real data with bit_mask...")
-    xored_string = xor(data_bit_string, Q*q)
+    bits_per_packet = Q * q * W
+    num_bits = len(data_bit_string)
+    num_packets = math.ceil(num_bits / bits_per_packet)
 
-    print("Generating OFDM data sequence...")
-    data_sequence = bits_to_ofdm_sequence(xored_string, K)
-
-    # constructing packets
-    num_blocks = len(data_sequence) // P
-    num_packets = math.ceil(num_blocks / W)
-
+    print("Initialising empty recording...")
     master_rec = Recording.empty(F)
     master_rec.append_recording(chirp_rec)
 
-    print("Splitting into packets...")
+    num_steps = 3
+    print("Splitting into {} packets...".format(num_packets))
     for i in range(0, num_packets):
-        lower_index = i*W*P
-        upper_index = lower_index + W*P
+        lower_index = i * bits_per_packet
+        upper_index = lower_index + bits_per_packet
 
-        packet_data = data_sequence[lower_index : upper_index]
+        #slice
+        packet_bits = data_bit_string[lower_index : upper_index]
+
+        #xor
+        progress_bar(i*num_steps, num_packets*num_steps)
+        xored_bits = xor(packet_bits, Q*q)
+
+        #convert to time domain
+        progress_bar(i*num_steps + 1, num_packets*num_steps)
+        packet_data_ofdm = bits_to_ofdm_sequence(xored_bits, K)
         
         # padding with repeat of first symbol
-        num_data_blocks = len(packet_data) // P
+        num_data_blocks = len(packet_data_ofdm) // P
         if(num_data_blocks < W):
-            first_block = packet_data[0 : P]
+            first_block = packet_data_ofdm[0 : P]
             suffix = np.tile(first_block, W - num_data_blocks)
-            packet_data = np.concatenate((packet_data, suffix))
+            packet_data_ofdm = np.concatenate((packet_data_ofdm, suffix))
 
+        #concatenation
+        progress_bar(i*num_steps + 2, num_packets*num_steps)
         known_packet_known = np.concatenate((
             known_block_repeated,
-            packet_data,
+            packet_data_ofdm,
             known_block_repeated
         ))
 
@@ -64,6 +72,7 @@ def bits_to_wav_recording(data_bit_string, K):
         master_rec.append_recording(packet_data_rec)
         master_rec.append_recording(chirp_rec)
 
+    progress_bar(1, 1)
     print("Done creating transmission")
     return master_rec
 
