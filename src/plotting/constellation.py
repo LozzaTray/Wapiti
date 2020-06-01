@@ -22,5 +22,5 @@ def plot_complex_symbols(symbol_sequence):
             label=str(i)
         )
     plt.grid()
-    plt.legend()
+    #plt.legend()
     plt.show()

@@ -34,7 +34,7 @@ def run():
 
     offset = int(input("Offset in bytes: "))
 
-    num_bytes = min(len(source_bytes), len(out_bytes))
+    num_bytes = min(len(source_bytes), len(out_bytes)) - offset
     
     bit_errors = 0
     
