@@ -6,7 +6,7 @@ from src.coding.decode import decode_symbol_sequence
 from src.coding.utils import xor
 from src.file_io.jossy_format import perform_jossy
 from src.audio.chirp import generate_chirp_recording
-from config import N, get_K, F, F0, F1, C, D, Q1, Q2, Q, q
+from config import N, get_K, F, F0, F1, C, D, q, get_Q
 from src.file_io.utils import progress_bar
 from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
 from src.ofdm.known_data import gen_known_data_chunk
@@ -15,10 +15,14 @@ from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
 def run():
     debug = False
 
-    mode = input("Mode: ")
+    mode = input("Transmission mode (K[A,B,C]): ")
     K = get_K(mode)
+    mode = input("Transmission mode (Q[1,2,3]): ")
+    Q1, Q2 = get_Q(mode)
 
     P = N + K
+    Q = Q2 - Q1
+
     signal_file = input("which file would you like to decode? (no .wav required) ")
     signal_file = get_recording_file_path(signal_file + ".wav")
     signal_rec = Recording.from_file(signal_file)

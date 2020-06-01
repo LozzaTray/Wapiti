@@ -1,6 +1,6 @@
 """code to generate wav from file"""
 from src.audio.recording import Recording
-from config import N, get_K, C, D, W, Q, Q1, Q2, q, F, F0, F1
+from config import N, get_K, C, D, W, q, F, F0, F1, get_Q
 from src.file_io.utils import get_data_file_path, get_recording_file_path
 from src.coding.encode import encode_bit_string
 from src.coding.utils import xor
@@ -12,15 +12,16 @@ import numpy as np
 import math
 
 
-def bits_to_ofdm_sequence(bit_string, K):
+def bits_to_ofdm_sequence(bit_string, K, Q1, Q2):
     symbol_sequence = encode_bit_string(bit_string)
     modulated_sequence = modulate_sequence(symbol_sequence, N=N, K=K, Q1=Q1, Q2=Q2)
     return modulated_sequence
 
 
-def bits_to_wav_recording(data_bit_string, K):
+def bits_to_wav_recording(data_bit_string, K, Q1, Q2):
     P = N + K
-    
+    Q = Q2 - Q1
+
     print("Generating chirp delimiter...")
     chirp_rec = generate_chirp_recording(F, F0, F1, C*P)
 
@@ -50,7 +51,7 @@ def bits_to_wav_recording(data_bit_string, K):
 
         #convert to time domain
         progress_bar(i*num_steps + 1, num_packets*num_steps)
-        packet_data_ofdm = bits_to_ofdm_sequence(xored_bits, K)
+        packet_data_ofdm = bits_to_ofdm_sequence(xored_bits, K, Q1, Q2)
         
         # padding with repeat of first symbol
         num_data_blocks = len(packet_data_ofdm) // P
@@ -95,8 +96,10 @@ def create_bits_for_file(file_name, file_path):
 
 def run():
     # get mode
-    mode = input("Transmission mode: ")
+    mode = input("Transmission mode (K[A,B,C]): ")
     K = get_K(mode)
+    mode = input("Transmission mode (Q[1,2,3]): ")
+    Q1, Q2 = get_Q(mode)
 
     # get data pre-transmission
     source_file_name = input("File to encode (must be in data dir): ")
@@ -106,7 +109,7 @@ def run():
     source_bits = create_bits_for_file(source_file_name, source_file_path)
 
     # convert to wav
-    rec = bits_to_wav_recording(source_bits, K)
+    rec = bits_to_wav_recording(source_bits, K, Q1, Q2)
 
     # save
     out_file_name = input("File name to save under (.wav): ")
