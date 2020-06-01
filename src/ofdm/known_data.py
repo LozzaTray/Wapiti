@@ -17,7 +17,7 @@ def gen_known_data_chunk(N, K):
     # map to QPSK
     symbol_sequence = encode_bit_string(bit_string)
     # convert to time-domain
-    known_block = modulate_sequence(symbol_sequence, N=N, K=K, Q1=1, Q2=N//2 - 1)
+    known_block = modulate_sequence(symbol_sequence, N=N, K=K, Q1=1, Q2=N//2)
     
     # check just one block long
     P = N + K
