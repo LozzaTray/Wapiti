@@ -9,6 +9,6 @@ def plot_complex_symbols(symbol_sequence):
     imag = np.imag(symbol_sequence)
 
     plt.figure()
-    plt.scatter(real, imag)
+    plt.scatter(real, imag, s=0.1)
     plt.grid()
     plt.show()

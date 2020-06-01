@@ -15,7 +15,7 @@ from src.plotting.constellation import plot_complex_symbols
 
 
 def run():
-    debug_channel = True
+    debug_channel = False
     debug_symbols = True
 
     mode = input("Transmission mode (K[A,B,C]): ")
