@@ -10,4 +10,5 @@ def plot_complex_symbols(symbol_sequence):
 
     plt.figure()
     plt.scatter(real, imag)
+    plt.grid()
     plt.show()

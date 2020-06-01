@@ -15,7 +15,7 @@ from src.plotting.constellation import plot_complex_symbols
 
 
 def run():
-    debug_channel = False
+    debug_channel = True
     debug_symbols = True
 
     mode = input("Transmission mode (K[A,B,C]): ")
@@ -67,7 +67,7 @@ def run():
         demodulated_signal = demodulate_sequence(packet_data, h_a, h_b, N, K, Q1=Q1, Q2=Q2)
 
         if debug_symbols:
-            plot_complex_symbols(demodulated_signal[0:P])
+            plot_complex_symbols(demodulated_signal)
 
         #decode
         progress_bar(i*num_steps + 1, num_packets*num_steps)

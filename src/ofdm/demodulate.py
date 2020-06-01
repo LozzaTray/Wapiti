@@ -1,6 +1,14 @@
 """Module for performing ofdm tasks"""
 from src.ofdm.utils import dft, pad_so_divisible
 import numpy as np
+import cmath
+
+
+def gen_H_estimate(mag_start, mag_end, phase_start, phase_end, step, num_steps):
+    mag = mag_start + (mag_end - mag_start) * step / num_steps
+    phase = phase_start + (phase_end - phase_start) * step / num_steps
+    nprect = np.vectorize(cmath.rect)
+    return nprect(mag, phase)
 
 
 def demodulate_block(block, H_arr, N, K, Q1, Q2):
@@ -38,6 +46,14 @@ def demodulate_sequence(received_sequence, channel_impulse_response_start, chann
     H_start = dft(channel_impulse_response_start, N)
     H_end = dft(channel_impulse_response_end, N)
 
+    # phase
+    phase_start = np.unwrap(np.angle(H_start))
+    phase_end = np.unwrap(np.angle(H_end))
+    
+    # magnitude
+    mag_start = np.abs(H_start)
+    mag_end = np.abs(H_end)
+
     P = N + K
     padded_sequence = pad_so_divisible(received_sequence, P)
     sequence_length = len(padded_sequence)
@@ -48,7 +64,8 @@ def demodulate_sequence(received_sequence, channel_impulse_response_start, chann
     for i in range(0, num_blocks):
         lower_index = i * P
         upper_index = lower_index + P
-        H_arr_block = H_start + (H_end - H_start)*i/num_blocks
+        #H_arr_block = H_start + (H_end - H_start)*i/num_blocks
+        H_arr_block = gen_H_estimate(mag_start, mag_end, phase_start, phase_end, i, num_blocks)
 
         block = padded_sequence[lower_index : upper_index]
         demodulated_block = demodulate_block(block, H_arr_block, N, K, Q1, Q2)
