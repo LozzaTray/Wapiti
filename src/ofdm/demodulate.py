@@ -53,7 +53,6 @@ def demodulate_sequence(received_sequence, channel_impulse_response_start, chann
         block = padded_sequence[lower_index : upper_index]
         demodulated_block = demodulate_block(block, H_arr_block, N, K, Q1, Q2)
 
-
         demodulated_sequence = np.concatenate((demodulated_sequence, demodulated_block))
 
     return demodulated_sequence

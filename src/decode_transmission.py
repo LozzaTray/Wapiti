@@ -11,9 +11,12 @@ from src.file_io.utils import progress_bar
 from src.file_io.jossy_format import decode_bit_string_jossy_format_and_save
 from src.ofdm.known_data import gen_known_data_chunk
 from src.plotting.impulse_response import plot_h_in_time, plot_h_freq_domain
+from src.plotting.constellation import plot_complex_symbols
+
 
 def run():
-    debug = False
+    debug_channel = False
+    debug_symbols = True
 
     mode = input("Transmission mode (K[A,B,C]): ")
     K = get_K(mode)
@@ -53,7 +56,7 @@ def run():
         h_a = estimate_channel(known_data_at_start, known_data_pre_trans, N, K)
         h_b = estimate_channel(known_data_at_end, known_data_pre_trans, N, K)
         
-        if debug:
+        if debug_channel:
             plot_h_in_time(h_a)
             plot_h_in_time(h_b)
             plot_h_freq_domain(h_a, N)
@@ -62,6 +65,9 @@ def run():
         #demodulate
         progress_bar(i*num_steps, num_packets*num_steps)
         demodulated_signal = demodulate_sequence(packet_data, h_a, h_b, N, K, Q1=Q1, Q2=Q2)
+
+        if debug_symbols:
+            plot_complex_symbols(demodulated_signal[0:P])
 
         #decode
         progress_bar(i*num_steps + 1, num_packets*num_steps)
