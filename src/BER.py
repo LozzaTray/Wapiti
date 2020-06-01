@@ -1,31 +1,47 @@
 from src.audio.recording import Recording
-from src.file_io.utils import get_recording_file_path
+from src.file_io.utils import get_data_file_path, get_output_file_path
+
+
+def num_bit_errors(byte_a, byte_b):
+    """Calculate number of bit errors"""
+    byte_string_a = format(byte_a, "08b")
+    byte_string_b = format(byte_b, "08b")
+    
+    bit_errors = 0
+    for i in range(0, 8):
+        if byte_string_a[i] != byte_string_b[i]:
+            bit_errors += 1
+
+    return bit_errors
 
 
 def run():
     """main loop"""
-    file1_short = input("File name to open (.wav): ")
-    file1_full = get_recording_file_path(file1_short + ".wav")
+    source_file = input("Source file: ")
+    source_file = get_data_file_path(source_file)
 
-    seq1 = Recording.from_file(file1_full).get_frames_as_int16()
-    
-    file2_short = input("File name to open (.wav): ")
-    file2_full = get_recording_file_path(file2_short + ".wav")
+    file_obj = open(source_file, mode="rb")
+    source_bytes = file_obj.read()
+    file_obj.close()
 
-    seq2 = Recording.from_file(file2_full).get_frames_as_int16()
+    
+    out_file = input("Output file: ")
+    out_file = get_output_file_path(out_file)
 
-    assert(len(seq2)==len(seq1)), "Bit sequences are not of the same length"
+    file_obj = open(out_file, mode="rb")
+    out_bytes = file_obj.read()
+    file_obj.close()
+
+
+    num_bytes = min(len(source_bytes), len(out_bytes))
     
-    errors = 0
-    bits = 0
+    bit_errors = 0
     
-    for i in range(len(seq1)):
-        for j in range(16):
-            if str(bin(seq1[i]))[2:].zfill(16)[j] != str(bin(seq2[i]))[2:].zfill(16)[j]:
-                errors += 1
-            bits += 1
+    for i in range(0, num_bytes):
+        bit_errors += num_bit_errors(source_bytes[i], out_bytes[i])
             
-    print("bit error rate: {}%".format(errors*100/bits))
+    bit_error_rate = (bit_errors * 100) / (num_bytes * 8)
+    print("Bit error rate: {}%".format(bit_error_rate))
 
 
 if __name__ == "__main__":

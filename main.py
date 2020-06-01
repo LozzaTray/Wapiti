@@ -7,6 +7,7 @@ from src.correlate import run as correlate
 from src.channel_estimator import run as estimate_channel
 from src.simulate_channel import run as simulate_channel
 from src.gen_standard_chirp import run as gen_standard_chirp
+from src.BER import run as ber
 
 
 options = {
@@ -18,6 +19,7 @@ options = {
     "6": "Estimate Channel",
     "7": "Simulate Channel",
     "8": "Generate Chirp",
+    "9": "Bit Error Rate",
     "q": "Quit"
 }
 
@@ -55,6 +57,8 @@ def run():
             simulate_channel()
         elif (option == "8"):
             gen_standard_chirp()
+        elif (option == "9"):
+            ber()
 
     print("Quitting")
 
