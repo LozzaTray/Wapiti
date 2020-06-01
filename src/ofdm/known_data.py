@@ -11,13 +11,13 @@ def gen_known_data_chunk(N, K):
     
     file_obj = open(known_file, mode="r")
     bit_string = file_obj.read()
-    bit_string = bit_string[0 : Q*q] # just sufficient for first symbol
+    bit_string = bit_string[0 : (N//2 -1)*q] # just sufficient for first symbol
     file_obj.close()
 
     # map to QPSK
     symbol_sequence = encode_bit_string(bit_string)
     # convert to time-domain
-    known_block = modulate_sequence(symbol_sequence, N=N, K=K, Q1=Q1, Q2=Q2)
+    known_block = modulate_sequence(symbol_sequence, N=N, K=K, Q1=0, Q2=N//2 - 1)
     
     # check just one block long
     P = N + K
