@@ -32,13 +32,14 @@ def run():
     out_bytes = file_obj.read()
     file_obj.close()
 
+    offset = int(input("Offset in bytes: "))
 
     num_bytes = min(len(source_bytes), len(out_bytes))
     
     bit_errors = 0
     
     for i in range(0, num_bytes):
-        bit_errors += num_bit_errors(source_bytes[i], out_bytes[i])
+        bit_errors += num_bit_errors(source_bytes[i], out_bytes[i + offset])
             
     bit_error_rate = (bit_errors * 100) / (num_bytes * 8)
     print("Bit error rate: {}%".format(bit_error_rate))
