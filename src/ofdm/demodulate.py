@@ -87,7 +87,7 @@ def demodulate_sequence(received_sequence, channel_impulse_response_start, chann
 
         # estimate interpolation
         H_arr_block = gen_H_estimate(mag_start, mag_end, phase_start, phase_end, i, num_blocks)
-        phase_gradient_in_block = phase_gradient * (num_blocks - 2*i) / 2
+        phase_gradient_in_block = phase_gradient * (num_blocks - 2*i) / 2 
 
         block = padded_sequence[lower_index : upper_index]
         demodulated_block = demodulate_block(block, H_arr_block, N, K, Q1, Q2, phase_gradient_in_block)

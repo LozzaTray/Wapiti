@@ -234,7 +234,7 @@ class Recording:
         #constant declaration
         DATA_WIDTH = (D + W + D) * P
         PEAK_SEPARATION = DATA_WIDTH + C * P
-        BACK_SHIFT = 10
+        BACK_SHIFT = 100
 
         # termination constants
         MAX_PEAK_DELAY = 100
