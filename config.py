@@ -6,7 +6,7 @@ OUTPUT_DIR = os.path.join(_curr_dir, "output")
 RECORDING_DIR = os.path.join(_curr_dir, "recordings")
 
 _K_dict = {"A": 224, "B": 704, "C": 1184}
-_Q_dict = {"1": (1, 2048), "2": (100, 1500), "3": (100, 1000)}
+_Q_dict = {"1": (1, 2048), "2": (100, 1500), "3": (100, 1000), "4": (101, 1501)}
 
 # OFDM params
 F = 48000

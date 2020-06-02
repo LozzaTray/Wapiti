@@ -4,13 +4,13 @@ import numpy as np
 import cmath
 
 
-def phase_correct(symbol_sequence, phase_gradient):
+def phase_correct(symbol_sequence, phase_gradient, Q1):
     """Correct phase"""
     corrected_sequence = np.zeros_like(symbol_sequence)
     num_symbols = len(symbol_sequence)
 
     for i in range(0, num_symbols):
-        corrected_sequence[i] = symbol_sequence[i] * cmath.rect(1, - i * phase_gradient / num_symbols)
+        corrected_sequence[i] = symbol_sequence[i] * cmath.rect(1, - (i + Q1) * phase_gradient / num_symbols)
     
     return corrected_sequence
 
@@ -45,7 +45,7 @@ def demodulate_block(block, H_arr, N, K, Q1, Q2, phase_gradient):
 
     # only take positive frequency bins
     relevant_bins = demodulated_block[Q1: Q2]
-    corrected_bins = phase_correct(relevant_bins, phase_gradient)
+    corrected_bins = phase_correct(relevant_bins, phase_gradient, Q1)
     return corrected_bins
 
 

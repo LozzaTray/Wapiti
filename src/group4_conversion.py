@@ -1,5 +1,5 @@
 from src.file_io.utils import get_output_file_path
-from src.audio.recording import Recording
+from scipy.io import wavfile
 import numpy as np
 
 
@@ -12,11 +12,18 @@ def run():
     out_bytes = file_obj.read()
     file_obj.close()
 
-    int_array = np.fromstring(out_bytes, np.int16)
-    scaled_array = int_array - 2**15
+    data_bit_string = "".join([format(byte, "08b") for byte in out_bytes])
 
-    filename = get_output_file_path("gr4-decoded.bin")
-    scaled_array.astype(np.int16).tofile(filename)
+    new_data = []
+    for i in range(0, len(data_bit_string), 16):
+        new_data.append(data_bit_string[i:i+16])  
+    
+    int_data = [] 
+    for i in new_data:
+        int_data.append(int(i,2)-2**15)
+    
+    filename = get_output_file_path("gr4-decoded.wav")
+    wavfile.write(filename, 48000, np.array(int_data, dtype=np.int16))
     print("Done")
 
 
